@@ -37,9 +37,7 @@ Query StartTalk{ slide(id: "1") {
 #_**OKhttp | RxJava | Retrofit | Immutables| Gson | Guava | SqlDelight/Brite | Store | Curl | JsonViewer.hu**_
 ---
 
-#[fit] Do we really need all of these?!
-##(tldr:we used to)
-
+#Different libraries to fill gaps in REST data loading
 ---
 
 #Here's how we used to load data
@@ -85,25 +83,22 @@ Query StartTalk{ slide(id: "1") {
 #Threading with RxJava
 ---
 
-Thats a good architecture
-Also that’s not something we can expect a beginner to know
-[reveal]There’s got to be a better way
+#Thats a good architecture
+#It's also not something we can expect a beginner to know
+
+---
+#Apollo Android GraphQL was developed as a culmination of tools, libraries, and patterns to assist in fetching data from modern GraphQL servers
 
 ---
 
-#Goals:
-##We don’t want to compromise good development
-##We also don’t want to get lost in all this boilerplate
----
-#Pain Points
+#REST has problems
 ##No control over response (OOMs)
 ##Bad introspection(Curl? Plugins?)
 ##Lots of manual work
-##Loading from multiple sources
+##Tough to load from multiple sources
 ---
 
-#What if instead we knew about Github Graph APi
-And used Apollo Android?
+#What if instead we use Apollo Android and Github's GraphQL API
 
 ---
 ^Brian: Mike is a hardass and expects all the above when I code
@@ -155,12 +150,14 @@ And used Apollo Android?
 #Fragments  = Partials 
 ##TODO Brian fill in code sample 
 ---
-
 #What is Apollo-Android?
-###Apollo allows you to interact with a graphql server
-###It's a strongly-typed, caching GraphQL client for Android
-###Created based on Facebook's GraphQl Spec
-###Similar to Apollo JS + iOS but built for Android from the start
+##A strongly-typed, caching GraphQL client for Android
+##Created based on Facebook's GraphQl Spec
+##Similar to Apollo JS + iOS but built for Android from the start
+---
+#Apollo-Android has 2 main parts
+##*Apollo Code Gen - To generate code
+##*Apollo Client  - For executing requests
 ---
 #Using Apollo-Android
 Add apollo dependencies
