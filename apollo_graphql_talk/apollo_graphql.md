@@ -166,16 +166,30 @@ Query StartTalk{ slide(id: "1") {
 ##*Apollo Code Gen - To generate code
 ##*Apollo Client  - For executing requests
 ---
-#Using Apollo-Android
-Add apollo dependencies
+
+#Apollo Code Gen
+##Generates Java Request/Response POJOs & Parsers
+###<br><br>
+###Written in Kotlin with :heart:
 
 ---
-#Instantiate an Apollo Client
+<br><br><br><br><br><br><br><br><br>
+#[fit]Using Apollo-Android
+#like a boss
+
 ---
+#Add Apollo dependencies
+
+
+---
+
 #**Add Schema & Query.graphql to your project**
-##Apollo Gradle Plugin  will create for you RepoQuery.java a Java representation of Request|Response|Mapper
+###Apollo Gradle Plugin  will create for you RepoQuery.java a Java representation of Request|Response|Mapper
 ---
 
+#Apollo writes code so you don't have to
+
+---
 #MyQuery.Builder
 ##Builder to create your request object
 ^show demo/example
@@ -189,6 +203,8 @@ Add apollo dependencies
 #MyQuery.Mapper
 ##Reflection Free parsing of a Graphql Response
 ##No Slower than AutoValue-Moshi (show generated code)
+---
+#Instantiate an Apollo Client
 ---
 
 # Apollo’s api is very similar to Okhttp
