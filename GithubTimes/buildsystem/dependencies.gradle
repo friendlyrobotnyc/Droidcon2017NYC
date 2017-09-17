@@ -1,0 +1,11 @@
+ext.versions = [
+
+        immutables             : '2.5.5',
+        immutableAnnotations   : '2.5.1']
+
+
+ext.libraries = [
+        immutablesValue         : "org.immutables:value:$versions.immutables",
+        immutablesGson          : "org.immutables:gson:$versions.immutables",
+        immutableAnnotations    : "org.immutables:value:$versions.immutableAnnotations:annotations"]
+
