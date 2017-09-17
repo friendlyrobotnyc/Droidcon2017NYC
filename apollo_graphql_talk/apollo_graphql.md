@@ -33,11 +33,8 @@ Query StartTalk{ slide(id: "1") {
 #[fit]Memory
 ---
 
-#We mitigate challenges wtih Open Source
+#Open Source can mitigate challenges, different libraries fill gaps in REST data loading
 #_**OKhttp | RxJava | Retrofit | Immutables| Gson | Guava | SqlDelight/Brite | Store | Curl | JsonViewer.hu**_
----
-
-#Different libraries to fill gaps in REST data loading
 ---
 
 #Here's how we used to load data
@@ -130,33 +127,6 @@ Query StartTalk{ slide(id: "1") {
 ^Show chaining multiple queries
 
 ---
-#Basics - Start with a query
-## Queries have params and define shape of response 
-```java
-   organization(login:”nyTimes”){
-     repositories(first:6 {
-           Name
-}}
-```
----
-
-#[fit]You can explore & build queries using graphiql
-##Most Graphql Servers have a GUI
-^[insert] Github Explorer Demo Gif/Video
-
----
-
-#Explorer shows you anything that exists in the Schema
-###Nullability Rules
-###Enum values
-###Data Types
-###Anything Else?
-
----
-
-#Fragments  = Partials 
-##TODO Brian fill in code sample 
----
 #What is Apollo-Android?
 ##A strongly-typed, caching GraphQL client for Android
 ##Created based on Facebook's GraphQl Spec
@@ -179,6 +149,33 @@ Query StartTalk{ slide(id: "1") {
 
 ---
 #Add Apollo dependencies
+---
+#Basics - Start with a query
+## Queries have params and define shape of response 
+```java
+   organization(login:”nyTimes”){
+     repositories(first:6 {
+           Name
+}}
+```
+---
+
+#[fit]You can explore & build queries using graphiql
+##Most Graphql Servers have a GUI
+^[insert] Github Explorer Demo Gif/Video
+
+---
+
+#Explorer shows you anything that exists in the Schema
+###Nullability Rules
+###Enum values
+###Data Structure
+###Types
+---
+
+#Fragments  = Partials 
+##TODO Brian fill in code sample 
+---
 
 
 ---
