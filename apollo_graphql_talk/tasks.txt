@@ -1,0 +1,34 @@
+gif of our app starting up
+
+image of a build.gradle with OKhttp | RxJava | Retrofit | Immutables| Gson | Guava | SqlDelight/Brite | Store 
+
+image of something complicated/rube goldberg machine?
+
+image of curl to github api
+image of jsonviewer for large son response
+
+code sample of class + inner classes for all data models
+
+code sample adding @GsonAdapter with callout
+
+code sample init okhttp + retrofit
+
+code sample subscribeOn, observeOn with rxjava
+
+code sample sqldelight/brite
+
+code sample setting up store and calling get/fresh
+
+image I have no idea what I’m doing dog
+
+image of apollo android from blog
+
+fill in basics of grahpql, 5-10 slides
+
+code sample schema
+
+
+make slide when is this good to be used?
+
+pros/cons over rest and current architecture 
+
