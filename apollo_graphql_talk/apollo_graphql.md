@@ -43,10 +43,17 @@ Query StartTalk{ slide(id: "1") {
 #Here's how we used to load data
 #Using all those great open source libraries
 ---
-^slide is split in half, left side has curl, right has the json viewer
+
+
 #[fit]_**Start with Inspection**_
-#curl to get json
-#JsonViewer.hu to inspect  it
+
+```java
+ curl -i "https://api.github.com/repos/vmg/redcarpet/issues?state=closed" >> closed_issues.json
+```
+
+
+![ inline](json_viewer.png)
+
 ---
 ^
 #[fit]Data Modeling with Immutables
