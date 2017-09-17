@@ -5,7 +5,6 @@ image of a build.gradle with OKhttp | RxJava | Retrofit | Immutables| Gson | Gua
 image of something complicated/rube goldberg machine?
 
 image of curl to github api
-image of jsonviewer for large son response
 
 code sample of class + inner classes for all data models
 
