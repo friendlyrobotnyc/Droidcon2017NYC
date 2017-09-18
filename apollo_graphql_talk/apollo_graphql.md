@@ -1,6 +1,6 @@
 
 
-^theme:Fira Blue
+^theme:Libre white 
 ```javascript
 Query StartTalk{ slide(id: "1") {
     Title
@@ -37,8 +37,7 @@ Query StartTalk{ slide(id: "1") {
 #_**OKhttp | RxJava | Retrofit | Immutables| Gson | Guava | SqlDelight/Brite | Store | Curl | JsonViewer.hu**_
 ---
 
-#Here's how we used to load data
-#Using all those great open source libraries
+#Let's walk through getting Gtihub data into our app using REST and all those great  libraries
 ---
 
 
@@ -53,24 +52,74 @@ Query StartTalk{ slide(id: "1") {
 
 ---
 ^
-#[fit]Data Modeling with Immutables
-<br>
-#While code gen helps there's still a lot of manual error prone work
+#Create your Value Objects with Immutables
+##**Error Prone even with Code Generation**
+```java
+
+interface Issue {
+    User user();
+    String url();
+
+
+    interface User {
+        long id();
+        String name();
+    }
+}
+```
+
+---
+^
+#Create your Value Objects with Immutables
+##**Error Prone even with Code Generation**
+```java, [.highlight: 1,6]
+@Value.Immutable
+interface Issue {
+    User user();
+    String url();
+
+    @Value.Immutable
+    interface User {
+        long id();
+        String name();
+    }
+}
+```
 
 ---
 
 ^NOTE: show how poorly data is structured and how big it is/why we need reflection free parsing
 
-#[fit] Parsing with Gson & Immutables
+#[fit] _**Parsing Json through code gen**_
+```java, [.highlight: 1]
+@Gson.TypeAdapters
+@Value.Immutable
+interface Issue {
+    User user();
+    String url();
 
-:+1: Reflection Free Parsing 
-:-1: Another dependencies and boilerplate in each model
+    @Value.Immutable
+    interface User {
+        long id();
+        String name();
+    }
+}
+```
 
 ---
 
 #[fit] Setting up Networking
-^Setup Okhttp
-^Setup Retrofit with Okhttp, Moshi, RxJava
+```java
+ public GithubApi provideRetrofit(Gson gson, 
+ OkHttpClient okHttpClient) {
+        return new Retrofit.Builder()
+                .client(okHttpClient)
+                .baseUrl(BuildConfig.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build()
+                .create(GithubApi.class);}
+```
 
 ---
 #[fit]Disk Caching with SqlDelight/Brite 
@@ -79,31 +128,62 @@ Query StartTalk{ slide(id: "1") {
 
 ---
 #Store
-
-:+1: Caching Policies, Request Routing
-:-1: One more level of abstraction
-
----
-#Threading with RxJava
+## In Memory Caching
+## Request Routing (Fresh/Get)
+## Disk Expiration Policies
 ---
 
 #Thats a good architecture
 #It's also not something we can expect a beginner to know
-
----
-#Apollo Android GraphQL was developed as a culmination of tools, libraries, and patterns to assist in fetching data from modern GraphQL servers
-
 ---
 
 #REST has problems
-##No control over response (OOMs)
-##Bad introspection(Curl? Plugins?)
-##Lots of manual work
-##Tough to load from multiple sources
+###No control over response size (OOMs)
+###Bad introspection(Curl? Plugins?)
+###Lots of manual work
+###Tough to load from multiple sources
+
+---
+#[fit]Main Problem: 
+#[fit]Rest was developed by our grandparents
+##It reminds me of java
 ---
 
-#What if instead we use Apollo Android and Github's GraphQL API
+#GraphQL was create by Facebook as a reimagining of server/client data transfer
 
+Give client-side developers an efficient way to query data they want to retrieve.
+<br>Give server-side developers an efficient way to get their data out to their users.
+<br>Give everyone an easy and efficient way of accessing data (it uses less resources than the REST API, especially with mobile applications).
+
+---
+
+#What’s  GraphQL?
+
+- A query language for APIs and a runtime for fulfilling those queries with your existing data.
+- Alternative for Rest-API
+- Client driven - get only data you need
+^Show chaining multiple queries
+
+---
+###GraphQL is great but Facebook forgot to open source an Android Client :disappointed:
+
+
+
+---
+![ original 50%](apollo_adroid.png)
+
+###GraphQL is great but Facebook forgot to open source an Android Client :disappointed:
+###<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>_**Apollo Android**_ was developed by AirBnb, Shopify & New York Times as a culmination of tools, libraries, and patterns to assist in fetching data from GraphQL servers
+
+
+
+---
+
+
+#Let's see a demo using Apollo to hit Github's GraphQL API
+##_**OKhttp | RxJava | Apollo-Android**_
+###You Ain't Gonna Need It
+#_**~~Retrofit~~ | ~~Immutables~~| ~~Gson~~ | ~~Guava~~ | ~~SqlDelight/Brite~~ | ~~Store~~ | ~~Curl~~ | ~~JsonViewer.hu~~**_
 ---
 ^Brian: Mike is a hardass and expects all the above when I code
 #[fit]Demo: Same with Apollo in 5 minutes
@@ -115,22 +195,13 @@ Query StartTalk{ slide(id: "1") {
 
 ---
 
-#What just happened?
-##Let’s break it all down!
-
----
-
-#What’s A GraphQL?
-##A query language for APIs and a runtime for fulfilling those queries with your existing data.
-##Alternative for Rest-API
-##Client driven - get only data you need
-^Show chaining multiple queries
+#[fit] Now for some explanations
 
 ---
 #What is Apollo-Android?
 ##A strongly-typed, caching GraphQL client for Android
 ##Created based on Facebook's GraphQl Spec
-##Similar to Apollo JS + iOS but built for Android from the start
+##Convention over configuration 
 ---
 #Apollo-Android has 2 main parts
 ##*Apollo Code Gen - To generate code
@@ -149,7 +220,7 @@ Query StartTalk{ slide(id: "1") {
 
 ---
 #Add Apollo dependencies
----
+--- 
 #Basics - Start with a query
 ## Queries have params and define shape of response 
 ```java
