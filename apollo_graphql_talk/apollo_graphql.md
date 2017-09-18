@@ -244,42 +244,174 @@ Give client-side developers an efficient way to query data they want to retrieve
 ###Types
 ---
 
-#Fragments  = Partials 
+#Fragments  = Partials, great for deduping code
 ##TODO Brian fill in code sample 
 ---
-
-
----
-
-#**Add Schema & Query.graphql to your project**
+#[fit]**Add Schema & Query.graphql to project**
 ###Apollo Gradle Plugin  will create for you RepoQuery.java a Java representation of Request|Response|Mapper
+```java
+
+@Generated("Apollo GraphQL")
+public final class RepoQuery implements Query<RepoQuery.Data, RepoQuery.Data, RepoQuery.Variables> {
+  public static final String OPERATION_DEFINITION = "query Repo($name: String!) {\n"
+      + "  organization(login: $name) {\n"
+      + "    __typename\n"
+      + "    repositories(first: 6, orderBy: {direction: DESC, field: STARGAZERS}) {\n"
+      + "      __typename\n"
+      + "      totalCount\n"
+      + "      edges {\n"
+      + "        __typename\n"
+      + "        node {\n"
+      + "          __typename\n"
+      + "          stargazers {\n"
+      + "            __typename\n"
+      + "            totalCount\n"
+      + "          }\n"
+      + "          name\n"
+      + "        }\n"
+      + "      }\n"
+      + "    }\n"
+      + "  }\n"
+      + "}";
+
+  public static final String QUERY_DOCUMENT = OPERATION_DEFINITION;
+
+  private static final OperationName OPERATION_NAME = new OperationName() {
+    @Override
+    public String name() {
+      return "Repo";
+    }
+  };
+
+  private final RepoQuery.Variables variables;
+
+  public RepoQuery(@Nonnull String name) {
+    Utils.checkNotNull(name, "name == null");
+    variables = new RepoQuery.Variables(name);
+  }
+  ...
+  ```
+
 ---
 
-#Apollo writes code so you don't have to
+#Apollo writes code so you don't have to make errors writing it yourself
 
 ---
 #MyQuery.Builder
 ##Builder to create your request object
-^show demo/example
+```java
+query = RepoQuery.builder().name("friendlyrobotnyc").build()
+...
+
+public static final class Builder {
+    private @Nonnull String name;
+
+    Builder() {
+    }
+
+    public Builder name(@Nonnull String name) {
+      this.name = name;
+      return this;
+    }
+
+    public RepoQuery build() {
+      if (name == null) throw new IllegalStateException("name can't be null");
+      return new RepoQuery(name);
+    }
+  }
+```
 
 ---
-#MyQuery.Data
-###Value objects of your query response
-###Effective Java defined “Value Object”
-###All nested models you need get generated
+#MyQuery.Data = Effective Java Value Object
+##Apollo even generates comments from schema
+```java
+ public static class Repositories {
+    final @Nonnull String __typename;
+    final int totalCount;
+    final @Nullable List<Edge> edges;
+    private volatile String $toString;
+    private volatile int $hashCode;
+    private volatile boolean $hashCodeMemoized;
+
+    public @Nonnull String __typename() { return this.__typename; }
+
+    //Identifies the total count of items in the connection.
+    public int totalCount() {return this.totalCount;}
+
+    //A list of edges.
+    public @Nullable List<Edge> edges() {return this.edges;}
+
+    @Override
+    public String toString() {...}
+
+    @Override
+    public boolean equals(Object o) {  ... }
+
+    @Override
+    public int hashCode() {...}
+```
+
 ---
 #MyQuery.Mapper
 ##Reflection Free parsing of a Graphql Response
-##No Slower than AutoValue-Moshi (show generated code)
----
-#Instantiate an Apollo Client
+```java
+ public static final class Mapper implements ResponseFieldMapper<Repositories> {
+      final Edge.Mapper edgeFieldMapper = new Edge.Mapper();
+
+      @Override
+      public Repositories map(ResponseReader reader) {
+        final String __typename = reader.readString($responseFields[0]);
+        final int totalCount = reader.readInt($responseFields[1]);
+        final List<Edge> edges = reader.readList($responseFields[2], new ResponseReader.ListReader<Edge>() {
+          @Override
+          public Edge read(ResponseReader.ListItemReader reader) {
+            return reader.readObject(new ResponseReader.ObjectReader<Edge>() {
+              @Override
+              public Edge read(ResponseReader reader) {
+                return edgeFieldMapper.map(reader);
+              }
+            });
+          }
+        });
+        return new Repositories(__typename, totalCount, edges);
+      }
+    }
+
+```
+
+###Can parse 20mb response without OOM
+
 ---
 
-# Apollo’s api is very similar to Okhttp
-##Stateless Apollo Client that can create an `ApolloCall`
-##Which you can enqueue/clone/cancel 
-^java show example of above
+#Creating an Apollo Client
+```java
+apolloClient= ApolloClient.builder()
+                .serverUrl("https://api.github.com/graphql")
+                .okHttpClient(provideOkhttp())
+                .build();
+```
+---
 
+#Apollo’s api is very similar to Okhttp
+Stateless Apollo Client that can create an `ApolloCall`
+
+```java
+query = RepoQuery.builder().name("friendlyrobotnyc").build()
+
+ ApolloQueryCall githubCall = apolloClient.query(query);
+
+githubCall.enqueue(new ApolloCall.Callback<>() {
+    @Override
+    public void onResponse(@Nonnull Response<> response) {
+        
+    }
+
+    @Override
+    public void onFailure(@Nonnull ApolloException e) {
+
+    }
+});
+```
 ---
 
 

@@ -2,9 +2,14 @@ package com.wdziemia.githubtimes.graphql;
 
 import android.support.annotation.NonNull;
 
+import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.ApolloClient;
 import com.apollographql.apollo.ApolloQueryCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.wdziemia.githubtimes.RepoQuery;
+
+import javax.annotation.Nonnull;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -33,7 +38,19 @@ public class ApolloManager {
 
     public static ApolloQueryCall<RepoQuery.Data> repositories() {
         //apolloClient().query(new RepoQuery("friendlyrobotnyc")).e;
-        return apolloClient.query(RepoQuery.builder().name("friendlyrobotnyc").build());
+        ApolloQueryCall<RepoQuery.Data> githubCall = apolloClient.query(RepoQuery.builder().name("friendlyrobotnyc").build());
+            githubCall.enqueue(new ApolloCall.Callback<RepoQuery.Data>() {
+                @Override
+                public void onResponse(@Nonnull Response<RepoQuery.Data> response) {
+
+                }
+
+                @Override
+                public void onFailure(@Nonnull ApolloException e) {
+
+                }
+            });
+
     }
 
 }
