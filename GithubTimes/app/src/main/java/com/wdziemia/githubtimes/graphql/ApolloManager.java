@@ -50,6 +50,7 @@ public class ApolloManager {
 
                 }
             });
+            return githubCall;
 
     }
 

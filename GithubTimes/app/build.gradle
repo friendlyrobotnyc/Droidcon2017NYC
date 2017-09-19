@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.apollographql.android'
-apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 25
@@ -8,6 +9,9 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    flavorDimensions "phone"
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -59,6 +63,7 @@ android {
             buildConfigField "String", "SEARCH_REPO_ENDPOINT", '"search/repositories"'
             buildConfigField "String", "QUALIFIER_SEARCH_ORG", '"%s+type:org"'
             buildConfigField "String", "QUALIFIER_SEARCH_REPO", '"user:%s"'
+            dimension "phone"
         }
 
         // Points to local rest server using json-server(npm), default port 3000
@@ -68,6 +73,7 @@ android {
             buildConfigField "String", "SEARCH_REPO_ENDPOINT", '"repositories"'
             buildConfigField "String", "QUALIFIER_SEARCH_ORG", '"%s"'
             buildConfigField "String", "QUALIFIER_SEARCH_REPO", '"%s"'
+            dimension "phone"
         }
     }
 }
@@ -94,7 +100,7 @@ def getIP() {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    annotationProcessor libraries.immutablesValue
+    kapt libraries.immutablesValue
     compile libraries.immutablesGson
     compile libraries.immutableAnnotations // annotation-only artifact
 
@@ -127,13 +133,13 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.5'
 
     compile 'com.google.dagger:dagger:2.5'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.5'
+    kapt 'com.google.dagger:dagger-compiler:2.5'
 
     compile 'nl.littlerobots.rxlint:rxlint:1.0'
     compile 'com.apollographql.apollo:apollo-rx-support:0.4.0'
 
     compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    kapt 'com.jakewharton:butterknife-compiler:8.5.1'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
