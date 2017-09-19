@@ -33,6 +33,20 @@ Query StartTalk{ slide(id: "1") {
 #[fit]Memory
 ---
 
+#[fit]Caching
+
+```java
+internal fun provideOkHttpCache(context: Context): Cache {
+    return Cache(context.cacheDir, CACHE_SIZE.toLong())
+}
+
+companion object {
+    private val CACHE_SIZE = 10 * 1024 * 1024 // 10MB
+}
+```
+
+---
+
 #Open Source can mitigate challenges, different libraries fill gaps in REST data loading
 #_**OKhttp | RxJava | Retrofit | Immutables| Gson | Guava | SqlDelight/Brite | Store | Curl | JsonViewer.hu**_
 ---
@@ -167,6 +181,7 @@ Give client-side developers an efficient way to query data they want to retrieve
 ###GraphQL is great but Facebook forgot to open source an Android Client :disappointed:
 
 
+![ original 80%](no_results.png)
 
 ---
 ![ original 50%](apollo_adroid.png)
@@ -219,14 +234,27 @@ Give client-side developers an efficient way to query data they want to retrieve
 
 ---
 #Add Apollo dependencies
+```java
+build.gradle:
+dependencies {
+  classpath 'com.apollographql.apollo:gradle-plugin:0.4.1'
+}
+
+app/build.gradle:
+apply plugin: 'com.apollographql.android'
+.....
+compile 'com.apollographql.apollo:apollo-rx-support:0.4.1'
+```
+
 --- 
 #Basics - Start with a query
 ## Queries have params and define shape of response 
 ```java
-   organization(login:”nyTimes”){
-     repositories(first:6 {
+organization(login:”nyTimes”){
+    repositories(first:6 {
            Name
-}}
+    }
+}
 ```
 ---
 

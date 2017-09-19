@@ -93,7 +93,6 @@ open class NetworkModule {
     }
 
     companion object {
-
         private val CACHE_SIZE = 10 * 1024 * 1024 // 10MB
     }
 }
