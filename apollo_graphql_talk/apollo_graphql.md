@@ -110,15 +110,14 @@ interface Issue {
 
 #[fit] Setting up Networking
 ```java
- public GithubApi provideRetrofit(Gson gson, 
- OkHttpClient okHttpClient) {
-        return new Retrofit.Builder()
+ open fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): GithubApi {
+        return Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(BuildConfig.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build()
-                .create(GithubApi.class);}
+                .create(GithubApi::class.java!!)}
 ```
 
 ---
