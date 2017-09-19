@@ -18,10 +18,16 @@ Query StartTalk{ slide(id: "1") {
 }
 ```
 ---
+
+#We work at NYTimes
+#Where we do _**a lot**_ of data loading
+
+![right 75%](fresh_launch.gif)
+
+
+
 ^insert slides of articles, sections, recipes, comments
 
-#[fit]We work at NYTimes 
-#[fit]Where we do _**a lot**_ of data loading
 ---
 #[fit]Data loading is 
 #[fit]challenging on Android
