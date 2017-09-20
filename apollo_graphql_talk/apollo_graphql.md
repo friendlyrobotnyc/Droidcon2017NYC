@@ -24,32 +24,15 @@ Query StartTalk{ slide(id: "1") {
 
 ![right 75%](fresh_launch.gif)
 
-
-
-^insert slides of articles, sections, recipes, comments
-
 ---
 #[fit]Data loading is 
 #[fit]challenging on Android
 ---
 #[fit]_**Challenges**_
-#[fit]Threading
-#[fit]Caching
-#[fit]Rotation
-#[fit]Memory
----
+#[fit]Data Modeling 
+#[fit]Storage (disk and mem)
+#[fit]Networking (retry and inflight)
 
-#[fit]Caching
-
-```java
-internal fun provideOkHttpCache(context: Context): Cache {
-    return Cache(context.cacheDir, CACHE_SIZE.toLong())
-}
-
-companion object {
-    private val CACHE_SIZE = 10 * 1024 * 1024 // 10MB
-}
-```
 
 ---
 
@@ -148,7 +131,6 @@ interface Issue {
 ---
 #Store
 ## Memory/Disk Caching with Fresh/Get
-
 ```java
 StoreBuilder.parsedWithKey<SectionFrontId, BufferedSource, SectionFront>()
                 .fetcher(fetcher)
@@ -196,6 +178,99 @@ Give client-side developers an efficient way to query data they want to retrieve
 - Alternative for Rest-API
 - Client driven - get only data you need
 ^Show chaining multiple queries
+
+---
+#Graphql Example Schema 
+
+```javascript
+
+type Character {
+  name: String!
+  appearsIn: [Episode]!
+}
+
+```
+---
+
+#Graphql Example Schema 
+
+```javascript, [.highlight: 1]
+
+type Character {
+  name: String!
+  appearsIn: [Episode]!
+}
+
+```
+* **Character** is a GraphQL Object Type, meaning it's a type with some fields. Most of the types in your schema will be object types.
+
+---
+#Graphql Example Schema 
+
+```javascript, [.highlight: 2,3]
+
+type Character {
+  name: String!
+  appearsIn: [Episode]!
+}
+
+```
+* **name** and **appearsIn** are fields on the Character type. That means that name and appearsIn are the only fields that can appear in any part of a GraphQL query that operates on the Character type.
+
+---
+
+#Graphql Example Schema 
+
+```javascript, [.highlight: 2]
+
+type Character {
+  name: String!
+  appearsIn: [Episode]!
+}
+
+```
+* **String** is one of the built-in scalar types - these are types that resolve to a single scalar object, and can't have sub-selections in the query.
+
+---
+
+#Graphql Example Schema 
+
+```javascript, [.highlight: 2]
+
+type Character {
+  name: String!
+  appearsIn: [Episode]!
+}
+
+```
+* **String!** means that the field is non-nullable, meaning that the GraphQL service promises to always give you a value when you query this field.
+
+---
+
+#Graphql Example Schema 
+
+```javascript, [.highlight: 3]
+
+type Character {
+  name: String!
+  appearsIn: [Episode]!
+}
+
+```
+* **[Episode]!** represents an array of Episode objects. Since it is also non-nullable, you can always expect an array (with zero or more items) when you query the appearsIn field.
+
+---
+#Ask for what you need, get exactly that
+![inline](basic_graphql.mov)
+
+^top piece....is enalbled...showing query
+
+---
+
+#Ask for what you need, get exactly that
+
+
+^similar to above slide except bottom result is enabled
 
 ---
 ###GraphQL is great but Facebook forgot to open source an Android Client :disappointed:
