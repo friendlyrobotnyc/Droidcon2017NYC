@@ -147,9 +147,23 @@ interface Issue {
 
 ---
 #Store
-## In Memory Caching
-## Request Routing (Fresh/Get)
-## Disk Expiration Policies
+## Memory/Disk Caching with Fresh/Get
+
+```java
+StoreBuilder.parsedWithKey<SectionFrontId, BufferedSource, SectionFront>()
+                .fetcher(fetcher)
+                .persister(persister)
+                .parser(parser)
+                .memoryPolicy(MemoryPolicy
+                        .builder()
+                        .setMemorySize(11L)
+                        .setExpireAfterWrite(TimeUnit.HOURS.toSeconds(24))
+                        .setExpireAfterTimeUnit(TimeUnit.SECONDS)
+                        .build())
+                .networkBeforeStale()
+                .open()
+```
+
 ---
 
 #Thats a good architecture
