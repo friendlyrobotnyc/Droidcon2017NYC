@@ -229,9 +229,15 @@ Give front end developers an efficient way to query  only the data they want
 
 ---
 #[fit] GraphQL Basics 
-###from graphql.org
+Describe your data
+
+Ask for what you want
+
+Get predictable results
+
 ---
-#Graphql Example Schema 
+
+#Describe your data
 
 ```javascript
 
