@@ -3,7 +3,7 @@
 //DONE
 7) start with inspection...modify image....use chrome json viewer..make as background...
 
-
+//DONE
 12) pull sample from friendly demo of sqldelight 
 
 https://github.com/friendlyrobotnyc/BoxBee/blob/93a36fb2b3fba66226202a4a60b2cd3a508ed1e8/BoxBeeApp/app/src/main/java/com/friendlyrobot/boxbee/api/entities/route/Address.java
@@ -17,8 +17,10 @@ three images...top left address.java, bottom left is seed action...right is sq..
 //DONE
 13) remove sf reference
 
+//DONE
 14) need image of overwhelmed
 
+//DONE
 16) too wordy
 
 17) split into three slides
