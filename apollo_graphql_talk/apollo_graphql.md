@@ -371,10 +371,13 @@ organization(login:”nyTimes”){
 #Fragments  = Partials, great for deduping code
 ##TODO Brian fill in code sample 
 ---
-#[fit]**Add Schema & Query.graphql to project**
+#[fit]**Add Schema & Query.graphql to project and compile**
+ ---
 
+#Apollo writes code so you don't have to make errors writing it yourself
 ---
-###Apollo Gradle Plugin  will create for you RepoQuery.java a Java representation of Request|Response|Mapper
+#[fit]Apollo Gradle Plugin  will create for you RepoQuery.java 
+#[fit]a Java representation of Request|Response|Mapper
 ```java
 
 @Generated("Apollo GraphQL")
@@ -418,9 +421,6 @@ public final class RepoQuery implements Query<RepoQuery.Data, RepoQuery.Data, Re
   ...
   ```
 
----
-
-#Apollo writes code so you don't have to make errors writing it yourself
 
 ---
 #MyQuery.Builder
@@ -507,9 +507,14 @@ public static final class Builder {
 
 ###Can parse 20mb response without OOM
 
+
+---
+#[fit]Getting a Query Response from a Server
+
 ---
 
 #Creating an Apollo Client
+##Conventions over Configuration
 ```java
 apolloClient= ApolloClient.builder()
                 .serverUrl("https://api.github.com/graphql")
