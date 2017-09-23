@@ -13,7 +13,7 @@ Query StartTalk{ slide(id: "1") {
 ```javascript
 {
   Title: Landing Apollo on Android,
-  Authors:  [“Brian Plummer”,”Mike Nakhimovich],
+  Authors:  [“Brian Plummer”,”Mike Nakhimovich,
   Company: New York Times
 }
 ```
@@ -25,13 +25,13 @@ Query StartTalk{ slide(id: "1") {
 ![right 75%](fresh_launch.gif)
 
 ---
-#[fit]Data loading is 
-#[fit]challenging on Android
+#[fit]Data loading has 
+#[fit]lot of parts on Android
 ---
 #[fit]_**Challenges**_
-#[fit]Data Modeling 
-#[fit]Storage (disk and mem)
-#[fit]Networking (retry and inflight)
+#Data Modeling 
+#Storage: disk + mem
+#Networking (retry and inflight)
 
 
 ---
@@ -40,18 +40,18 @@ Query StartTalk{ slide(id: "1") {
 #_**OKhttp | RxJava | Retrofit | Immutables| Gson | Guava | SqlDelight/Brite | Store | Curl | JsonViewer.hu**_
 ---
 
-#Let's walk through getting Gtihub data into our app using REST and all those great  libraries
+#Let's walk through typical data load from Gtihub using REST and all those great  libraries
 ---
 
 
-#[fit]_**Start with Inspection**_
+#[fit]Start with Inspection
 
 ```java
  curl -i "https://api.github.com/repos/vmg/redcarpet/issues?state=closed" >> closed_issues.json
 ```
 
 
-![ inline](json_viewer.png)
+![ fit](json_viewer.png)
 
 ---
 ^
@@ -125,7 +125,6 @@ interface Issue {
 
 ---
 #[fit]Disk Caching with SqlDelight/Brite 
-#[fit]Why  don't we use room? Immutability
 ^ Find example from boxbee/anchor
 
 ---
@@ -153,15 +152,9 @@ StoreBuilder.parsedWithKey<SectionFrontId, BufferedSource, SectionFront>()
 ---
 
 #REST has problems
-###No control over response size (OOMs)
-###Bad introspection(Curl? Plugins?)
-###Lots of manual work
-###Tough to load from multiple sources
-
----
 #[fit]Main Problem: 
 #[fit]Rest was developed by our grandparents
-##It reminds me of java
+##(It reminds me of java)
 ---
 
 #GraphQL was create by Facebook as a reimagining of server/client data transfer
