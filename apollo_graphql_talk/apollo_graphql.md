@@ -339,7 +339,7 @@ dependencies {
 app/build.gradle:
 apply plugin: 'com.apollographql.android'
 .....
-//optional
+//optional RxSupport
 compile 'com.apollographql.apollo:apollo-rx-support:0.4.1'
 ```
 
@@ -372,6 +372,8 @@ organization(login:”nyTimes”){
 ##TODO Brian fill in code sample 
 ---
 #[fit]**Add Schema & Query.graphql to project**
+
+---
 ###Apollo Gradle Plugin  will create for you RepoQuery.java a Java representation of Request|Response|Mapper
 ```java
 
