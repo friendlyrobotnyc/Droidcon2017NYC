@@ -1,7 +1,8 @@
 //DONE
 2) cut trigger rebirth out of gif...just show sf coming up
-
+//DONE
 7) start with inspection...modify image....use chrome json viewer..make as background...
+
 
 12) pull sample from friendly demo of sqldelight 
 

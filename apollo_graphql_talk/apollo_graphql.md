@@ -43,13 +43,11 @@ Query StartTalk{ slide(id: "1") {
 #Let's walk through typical data load from Gtihub using REST and all those great  libraries
 ---
 
-
 #[fit]Start with Inspection
 
-```java
- curl -i "https://api.github.com/repos/vmg/redcarpet/issues?state=closed" >> closed_issues.json
-```
+#<br><br><br><br><br><br><br><br>
 
+#[fit] curl -i "https://api.github.com/repos/vmg/redcarpet/issues?state=closed" >> closed_issues.json
 
 ![ fit](json_viewer.png)
 
