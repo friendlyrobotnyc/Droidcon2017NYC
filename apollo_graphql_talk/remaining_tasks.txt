@@ -1,3 +1,4 @@
+//DONE
 2) cut trigger rebirth out of gif...just show sf coming up
 
 7) start with inspection...modify image....use chrome json viewer..make as background...
