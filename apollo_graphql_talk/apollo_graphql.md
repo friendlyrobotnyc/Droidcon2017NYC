@@ -551,14 +551,15 @@ githubCall.enqueue(new ApolloCall.Callback<>() {
 ##Apollo can represent as @Nullable
 ##Or as Optional<T> (Java, Guava, Shaded)
 ---
-#How About Caching
+#How About Caching -  2 types
 *HTTP
 *Normalized
+
 ---
 #Http Caching
 ##Similar to OKHTTP Cache but for POST requests
 ##Streams response to cache same time as parsing
-##Can Set Cache Timeouts
+##Can Set Cache Size
 ---
 #Prefetch into cache
 ##Useful for background updates of lots of data
@@ -579,8 +580,7 @@ githubCall.enqueue(new ApolloCall.Callback<>() {
 ---
 #RxJava 1 & 2 support is built in
 ```java
-RxApollo.from(ApolloManager
-       .repositories())
+RxApollo.from(apolloClient.query(RepoQuery.builder().name("friendlyrobotnyc").build()))
        .map(dataResponse -> dataResponse
        .data()
        .organization()
@@ -588,10 +588,6 @@ RxApollo.from(ApolloManager
        .subscribe(view::showRepositories, view::showError)
 ```
 #RxApollo response can be transformed into LiveData
----
-#Imperative Store
-##Apollo can be your database
-##You can update the normalized cache yourself
 ---
 #Mutations
 ##Queries are for getting Data Mutations are for making changes on server

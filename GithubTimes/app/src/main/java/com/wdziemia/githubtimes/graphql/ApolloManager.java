@@ -6,8 +6,12 @@ import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.ApolloClient;
 import com.apollographql.apollo.ApolloQueryCall;
 import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore;
+import com.apollographql.apollo.cache.http.HttpCacheStore;
 import com.apollographql.apollo.exception.ApolloException;
 import com.wdziemia.githubtimes.RepoQuery;
+
+import java.io.File;
 
 import javax.annotation.Nonnull;
 
@@ -19,6 +23,7 @@ public class ApolloManager {
 
     private static ApolloClient apolloClient= ApolloClient.builder()
                 .serverUrl("https://api.github.com/graphql")
+            .httpCacheStore(new DiskLruHttpCacheStore(new File(),5))
                 .okHttpClient(provideOkhttp())
                 .build();
 
@@ -38,7 +43,9 @@ public class ApolloManager {
 
     public static ApolloQueryCall<RepoQuery.Data> repositories() {
         //apolloClient().query(new RepoQuery("friendlyrobotnyc")).e;
-        ApolloQueryCall<RepoQuery.Data> githubCall = apolloClient.query(RepoQuery.builder().name("friendlyrobotnyc").build());
+        ApolloQueryCall<RepoQuery.Data> githubCall = apolloClient.mutate(RepoQuery.builder().name("friendlyrobotnyc").build());
+        githubCall.watcher()
+           apolloClient.prefetch(RepoQuery.builder().name("friendlyrobotnyc").build());
             githubCall.enqueue(new ApolloCall.Callback<RepoQuery.Data>() {
                 @Override
                 public void onResponse(@Nonnull Response<RepoQuery.Data> response) {
