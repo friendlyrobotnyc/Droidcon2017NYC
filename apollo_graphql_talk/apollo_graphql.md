@@ -129,7 +129,7 @@ interface Issue {
 #Store
 ## Memory/Disk Caching with Fresh/Get
 ```java
-StoreBuilder.parsedWithKey<SectionFrontId, BufferedSource, SectionFront>()
+StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
                 .fetcher(fetcher)
                 .persister(persister)
                 .parser(parser)
