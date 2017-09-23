@@ -263,7 +263,11 @@ type Character {
 
 
 ---
-###GraphQL is great but Facebook forgot to open source an Android Client :disappointed:
+
+#[fit] Now lets see it in Android
+
+---
+###We can't since Facebook did not open source an Android Client :disappointed:
 
 
 ![ original 80%](no_results.png)
@@ -271,15 +275,15 @@ type Character {
 ---
 ![ original 50%](apollo_adroid.png)
 
-###GraphQL is great but Facebook forgot to open source an Android Client :disappointed:
-###<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>_**Apollo Android**_ was developed by AirBnb, Shopify & New York Times as a culmination of tools, libraries, and patterns to assist in fetching data from GraphQL servers
+###Introducing Apollo-Android GraphQL
+###<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>_**Apollo Android**_ was developed by AirBnb, Shopify & New York Times as a culmination of tools, libraries, and patterns to assist in fetching data from GraphQL servers
 
 
 
 ---
 
 
-#Let's see a demo using Apollo to hit Github's GraphQL API
+#Now Let's see a demo using Apollo & Github's GraphQL API
 ##_**OKhttp | RxJava | Apollo-Android**_
 ###You Ain't Gonna Need It
 #_**~~Retrofit~~ | ~~Immutables~~| ~~Gson~~ | ~~Guava~~ | ~~SqlDelight/Brite~~ | ~~Store~~ | ~~Curl~~ | ~~JsonViewer.hu~~**_
