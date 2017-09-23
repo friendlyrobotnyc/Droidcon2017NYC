@@ -261,12 +261,6 @@ type Character {
 
 ^top piece....is enalbled...showing query
 
----
-
-#Ask for what you need, get exactly that
-
-
-^similar to above slide except bottom result is enabled
 
 ---
 ###GraphQL is great but Facebook forgot to open source an Android Client :disappointed:
