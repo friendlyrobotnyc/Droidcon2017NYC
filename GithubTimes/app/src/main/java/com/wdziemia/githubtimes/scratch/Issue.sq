@@ -1,0 +1,16 @@
+CREATE TABLE issue (
+    _id LONG  PRIMARY KEY AUTOINCREMENT,
+    id LONG NOT NULL,
+    url STRING,
+    title STRING,
+    comments INT NOT NUL
+}
+
+    select_all:
+    SELECT *
+    FROM issue;
+
+    select_by_id:
+    SELECT *
+    FROM issue
+    WHERE id = ?;

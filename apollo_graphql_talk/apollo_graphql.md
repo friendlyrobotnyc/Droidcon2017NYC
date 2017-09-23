@@ -123,7 +123,49 @@ interface Issue {
 
 ---
 #[fit]Disk Caching with SqlDelight/Brite 
-^ Find example from boxbee/anchor
+
+```javascript
+CREATE TABLE issue (
+    _id LONG  PRIMARY KEY AUTOINCREMENT,
+    id LONG NOT NULL,
+    url STRING,
+    title STRING,
+    comments INT NOT NUL
+}
+
+    select_all:
+    SELECT *
+    FROM issue;
+```
+
+---
+#[fit]Disk Caching with SqlDelight/Brite 
+
+```java
+public abstract class Issue implements IssueModel {
+    public static final Mapper<Issue> MAPPER =
+            new Mapper<>((Mapper.Creator<Issue>) ImmutableIssue::of);
+
+    public static final class Marshal extends IssueMarshal {
+    }
+}
+```
+
+---
+#[fit]Disk Caching with SqlDelight/Brite 
+
+```java
+long insertIssue(Issue issue) {
+        if (recordExists(Issue.TABLE_NAME, Issue.ID, String.valueOf(issue.id()))) {
+            return 0;
+        }
+
+        return db.insert(Issue.TABLE_NAME, new Issue.Marshal()
+                .url(issue.url())
+                .id(issue.id()));
+}
+
+```
 
 ---
 #Store
