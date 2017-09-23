@@ -303,20 +303,27 @@ type Character {
 ---
 #What is Apollo-Android?
 ##A strongly-typed, caching GraphQL client for Android
-##Created based on Facebook's GraphQl Spec
-##Convention over configuration 
----
-#Apollo-Android has 2 main parts
-##*Apollo Code Gen - To generate code
-##*Apollo Client  - For executing requests
----
-
-#Apollo Code Gen
-##Generates Java Request/Response POJOs & Parsers
-###<br><br>
-###Written in Kotlin with :heart:
+###Rich support of Types and Type Mappings
+###Builders to create queries
+###Query Validation at compilation 
 
 ---
+#Created based on Facebook's GraphQl Spec
+##Works with any Graphql Query
+##Apollo Android Supports:
+###Fragments
+###Union Types
+###Nullability
+###Deprecation
+
+---
+#Apollo-Android has **2 main parts**
+## **Gradle Plugin** Apollo Code Gen
+###Plugin  To generate code
+## **Runtime** Apollo Client
+###For executing operations
+---
+
 <br><br><br><br><br><br><br><br><br>
 #[fit]Using Apollo-Android
 #like a boss
@@ -332,6 +339,7 @@ dependencies {
 app/build.gradle:
 apply plugin: 'com.apollographql.android'
 .....
+//optional
 compile 'com.apollographql.apollo:apollo-rx-support:0.4.1'
 ```
 
@@ -590,6 +598,14 @@ RxApollo.from(ApolloManager
 ##Gradle plugin with code gen written in Kotlin
 ##ApolloClient borrows heavily from OKHTTP (fill in details)
 ##ApolloCall is similar to OKhttpCall (interceptors all the way down)
+
+---
+
+#Why do we need Apollo Code Gen
+##Generates Java Request/Response POJOs & Parsers
+###<br><br>
+###Written in Kotlin with :heart:
+
 ---
 #Version 1.0 ships today
 ##380 commits
