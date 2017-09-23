@@ -16,7 +16,7 @@ three images...top left address.java, bottom left is seed action...right is sq..
 
 //DONE
 13) remove sf reference
-
+//DONE
 14) need image of overwhelmed
 
 16) too wordy

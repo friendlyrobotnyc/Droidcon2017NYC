@@ -156,19 +156,25 @@ StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
 
 #Thats a good architecture
 #It's also not something we can expect a beginner to know
+![](overwhelmed.jpg)
+###Knowing all the right OSS is hard 
+
+---
+#[fit]**Most Conterversial Slide**
+#[fit]REST is legacy tech
+##(It reminds me of java)
 ---
 
-#REST has problems
-#[fit]Main Problem: 
-#[fit]Rest was developed by our grandparents
-##(It reminds me of java)
+#[fit] There's a new kid on the block
+#[fit] GraphQL
+![fit](graphql.png)
+
 ---
 
 #GraphQL was create by Facebook as a reimagining of server/client data transfer
 
-Give client-side developers an efficient way to query data they want to retrieve.
-<br>Give server-side developers an efficient way to get their data out to their users.
-<br>Give everyone an easy and efficient way of accessing data (it uses less resources than the REST API, especially with mobile applications).
+Give front end developers an efficient way to query  only the data they want
+<br><br><br><br><br><br>Give server-side developers an efficient way to get their data out to their users.
 
 ---
 
@@ -177,7 +183,7 @@ Give client-side developers an efficient way to query data they want to retrieve
 - A query language for APIs and a runtime for fulfilling those queries with your existing data.
 - Alternative for Rest-API
 - Client driven - get only data you need
-^Show chaining multiple queries
+- Works on iOS, Android, Web
 
 ---
 #[fit] GraphQL Basics 
