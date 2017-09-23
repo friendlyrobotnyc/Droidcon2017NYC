@@ -20,36 +20,45 @@ Query StartTalk{ slide(id: "1") {
 ---
 
 #We work at NYTimes
-#Where we do _**a lot**_ of data loading
+##Where we do _**a lot**_ of data loading
 
 ![right 75%](fresh_launch.gif)
 
 ---
-#[fit]Data loading has 
-#[fit]lot of parts on Android
----
-#[fit]_**Challenges**_
-#Data Modeling 
-#Storage: disk + mem
-#Networking (retry and inflight)
-
+#[fit]Data loading has a lot to think about on Android
+<br>
 
 ---
+#[fit]**Data loading has a lot to think about on Android**
+#<br><br><br><br><br><br><br><br>
+#* **Data Modeling** 
+#<br><br><br><br>
+#* **Storage:** disk + mem
+#<br><br><br><br>
+#* **Networking:** (retry and inflight)
 
-#Open Source can mitigate challenges, different libraries fill gaps in REST data loading
-#_**OKhttp | RxJava | Retrofit | Immutables| Gson | Guava | SqlDelight/Brite | Store | Curl | JsonViewer.hu**_
+
 ---
 
-#Let's walk through typical data load from Gtihub using REST and all those great  libraries
+#Open Source can mitigate challenges
+#FOSS fill gaps in REST loading
+#_**OKhttp · RxJava · Retrofit · Immutables · Gson · Guava · SqlDelight/Brite · Store · Curl · JsonViewer.hu**_
+---
+
+#**Walkthrough**:
+![left](octocat.png)
+
+#Typical data load from Github REST API using all those great  libraries
+
 ---
 
 #[fit]Start with Inspection
 
 #<br><br><br><br><br><br><br><br>
 
-#[fit] curl -i "https://api.github.com/repos/vmg/redcarpet/issues?state=closed" >> closed_issues.json
+#[fit] curl -i "https://api.github.com/repos/vmg/redcarpet/issues?state=closed" 
 
-![ fit](json_viewer.png)
+![fit](json_viewer.png)
 
 ---
 ^
@@ -91,7 +100,7 @@ interface Issue {
 
 ^NOTE: show how poorly data is structured and how big it is/why we need reflection free parsing
 
-#[fit] _**Parsing Json through code gen**_
+#[fit] _**Parsing Response with Code Gen**_
 ```java, [.highlight: 1]
 @Gson.TypeAdapters
 @Value.Immutable

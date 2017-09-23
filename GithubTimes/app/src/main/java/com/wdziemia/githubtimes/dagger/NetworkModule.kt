@@ -83,7 +83,7 @@ open class NetworkModule {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(provider.io()))
                 .build()
-                .create<GithubApi>(GithubApi::class.java!!)
+                .create<GithubApi>(GithubApi::class.java)
     }
 
     @Provides
