@@ -173,6 +173,9 @@ Give client-side developers an efficient way to query data they want to retrieve
 ^Show chaining multiple queries
 
 ---
+#[fit] GraphQL Basics 
+###from graphql.org
+---
 #Graphql Example Schema 
 
 ```javascript
