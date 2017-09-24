@@ -461,22 +461,27 @@ organization(login:”nyTimes”){
 ---
 
 #[fit]No CURL Needed
-##Most Graphql Servers have a GUI
+##Most Graphql Servers have a GUI (Graph**i**QL)
 ###https://developer.github.com/v4/explorer/
 ^[insert] Github Explorer Demo Gif/Video
 
 ---
 
-#Explorer is for exploring schema and building queries
+#Graph**i**QL is for exploring schema and building queries
 - Shape of Response
 - Nullability Rules
 - Enum values
 - Types
 
 ---
+Graph**i**QL is easy!
+
+![inline](graphiql_demo.mov)
+
+---
 
 #[fit]**Add Schema & RepoQuery.graphql to project & compile**
-#Image needed
+![inline](query_schema_location.png)
  ---
 ![left](ivan.png)
 
