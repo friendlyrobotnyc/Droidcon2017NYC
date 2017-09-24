@@ -43,8 +43,8 @@ Query DroidConNYC{ slide(id: "1")
 ![fit](graphql.png)
 #GraphQL was created by Facebook as a reimagining of server/client data transfer
 
-Give front end developers an efficient way to ask for minimal data
-<br><br><br><br><br><br>Give server-side developers a robust way to get their data out to their users.
+- Give front end developers an efficient way to ask for minimal data
+- Give server-side developers a robust way to get their data out to their users.
 
 ---
 ![fit](graphql.png)
@@ -82,7 +82,7 @@ type Character {
 }
 
 ```
-* **Character** is a GraphQL Object Type, meaning it's a type with some fields. Most of the types in your schema will be object types.
+**Character** is a GraphQL Object Type, meaning it's a type with some fields. Most of the types in your schema will be object types.
 
 ---
 #Describe your data in a schema
@@ -95,7 +95,7 @@ type Character {
 }
 
 ```
-* **name** and **appearsIn** are fields on the Character type. That means that name and appearsIn are the only fields that can appear in any part of a GraphQL query that operates on the Character type.
+**name** and **appearsIn** are fields on the Character type. That means that name and appearsIn are the only fields that can appear in any part of a GraphQL query that operates on the Character type.
 
 ---
 
@@ -109,7 +109,7 @@ type Character {
 }
 
 ```
-* **String** is one of the built-in scalar types - these are types that resolve to a single scalar object, and can't have sub-selections in the query.
+**String** is one of the built-in scalar types - these are types that resolve to a single scalar object, and can't have sub-selections in the query.
 
 ---
 
@@ -123,7 +123,7 @@ type Character {
 }
 
 ```
-* **String!** means that the field is non-nullable, meaning that the GraphQL service promises to always give you a value when you query this field.
+**String!** means that the field is non-nullable, meaning that the GraphQL service promises to always give you a value when you query this field.
 
 ---
 
@@ -137,7 +137,7 @@ type Character {
 }
 
 ```
-* **[Episode]!** represents an array of Episode objects. Since it is also non-nullable, you can always expect an array (with zero or more items) when you query the appearsIn field.
+**[Episode]!** represents an array of Episode objects. Since it is also non-nullable, you can always expect an array (with zero or more items) when you query the appearsIn field.
 
 ---
 #Ask for what you need
@@ -461,27 +461,22 @@ organization(login:”nyTimes”){
 ---
 
 #[fit]No CURL Needed
-##Most Graphql Servers have a GUI (Graph**i**QL)
+##Most Graphql Servers have a GUI
 ###https://developer.github.com/v4/explorer/
 ^[insert] Github Explorer Demo Gif/Video
 
 ---
 
-#Graph**i**QL is for exploring schema and building queries
+#Explorer is for exploring schema and building queries
 - Shape of Response
 - Nullability Rules
 - Enum values
 - Types
 
 ---
-Graph**i**QL is easy!
-
-![inline](graphiql_demo.mov)
-
----
 
 #[fit]**Add Schema & RepoQuery.graphql to project & compile**
-![inline](query_schema_location.png)
+#Image needed
  ---
 ![left](ivan.png)
 
@@ -706,10 +701,11 @@ githubCall.enqueue(new ApolloCall.Callback<>() {
 ---
 #How Does Apollo Store Work?
 - Each Object in Response will have its own record with ID
-- All Scalars will be merged together as fields
+- All Scalars/Members will be merged together as fields
 - When we are reading from Apollo, it will seamlessly read from Apollo Store or network
 
 ---
+
 #Settings Up Bi-Level Caching with Apollo Store
 ```java
 //Create DB
@@ -717,14 +713,33 @@ ApolloSqlHelper apolloSqlHelper = ApolloSqlHelper.create(context, "db_name");
 //Create NormalizedCacheFactory
 NormalizedCacheFactory normalizedCacheFactory = new LruNormalizedCacheFactory(EvictionPolicy.NO_EVICTION)
                                                     .chain(new SqlNormalizedCacheFactory(apolloSqlHelper));
+
+```
+---
+#Create a Cache Key Resolver
+```java
+
 //Create the cache key resolver
-CacheKeyResolver<Map<String, Object>> resolver = {
-            String id = (String) objectSource.get("id");
-            if (id == null || id.isEmpty()) {
-              return CacheKey.NO_KEY;
-            }
-            return CacheKey.from(id);
+ CacheKeyResolver cacheKeyResolver = new CacheKeyResolver() {
+      @Nonnull @Override
+      public CacheKey fromFieldRecordSet(@Nonnull ResponseField field, @Nonnull Map<String, Object> recordSet) {
+        String typeName = (String) recordSet.get("__typename");
+          if (recordSet.containsKey("id")) {
+          String typeNameAndIDKey = recordSet.get("__typename") + "." + recordSet.get("id");
+          return CacheKey.from(typeNameAndIDKey);
         }
+        return CacheKey.NO_KEY;
+      }
+
+      @Nonnull @Override
+      public CacheKey fromFieldArguments(@Nonnull ResponseField field, @Nonnull Operation.Variables variables) {
+        return CacheKey.NO_KEY;
+      }
+    };
+```
+---
+#Init Apollo Client with a cache
+```java, [.highlight: 4]
 //Build the Apollo Client
 ApolloClient apolloClient = ApolloClient.builder()
                                     .serverUrl("/")
@@ -732,7 +747,6 @@ ApolloClient apolloClient = ApolloClient.builder()
                                     .okHttpClient(okHttpClient)
                                     .build();
 ```
-
 ---
 #Don't like our Cache? BYO Cache
 ```java
@@ -769,9 +783,11 @@ RxApollo.from(apolloClient.query(RepoQuery.builder().name("nytimes").build()))
 ---
 
 #Version 1.0 ships soon!
-##380 commits
-##1000s of tests
-##18 contributors including devs from Shopify, Airbnb, NY Times
+- 380 commits 
+- 1000s of tests
+- 18 contributors including devs from Shopify, Airbnb, NY Times
+
+- Come join us at https://github.com/apollographql/apollo-android
 
 
 
