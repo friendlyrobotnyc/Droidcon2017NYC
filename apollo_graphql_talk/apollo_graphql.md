@@ -466,7 +466,7 @@ organization(login:”nyTimes”){
 
 ---
 
-#Explorer is for exploring schema and building queries
+#Graph**i**QL is for exploring schema and building queries
 - Shape of Response
 - Nullability Rules
 - Enum values
