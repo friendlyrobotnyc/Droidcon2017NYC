@@ -452,7 +452,7 @@ compile 'com.apollographql.apollo:apollo-rx-support:0.4.1'
 ## Queries have params and define shape of response 
 ```java
 organization(login:”nyTimes”){
-    repositories(first:6 {
+    repositories(first:6) {
            Name
     }
 }
@@ -511,7 +511,7 @@ organization(login:”nyTimes”){
 #[fit]Query.Builder - For Creating your request instance
 ```kotlin
 ///api
-val query = RepoQuery.builder.name("friendlyrobotnyc").build()
+val query = RepoQuery.builder.name("nytimes").build()
 
 //Generated Code
 
@@ -645,12 +645,12 @@ ApolloQueryCall githubCall = apolloClient.query(query);
 githubCall.enqueue(new ApolloCall.Callback<>() {
     @Override
     public void onResponse(@Nonnull Response<> response) {
-        
+        handleResponse(response);
     }
 
     @Override
     public void onFailure(@Nonnull ApolloException e) {
-
+        handleFailure(e);  
     }
 });
 ```
@@ -666,12 +666,12 @@ ApolloQueryCall githubCall = apolloClient.query(query);
 githubCall.enqueue(new ApolloCall.Callback<>() {
     @Override
     public void onResponse(@Nonnull Response<> response) {
-        
+        handleResponse(response);
     }
 
     @Override
     public void onFailure(@Nonnull ApolloException e) {
-
+        handleFailure(e);
     }
 });
 ```
@@ -687,12 +687,12 @@ ApolloQueryCall githubCall = apolloClient.query(query);
 githubCall.enqueue(new ApolloCall.Callback<>() {
     @Override
     public void onResponse(@Nonnull Response<> response) {
-        
+        handleResponse(response);
     }
 
     @Override
     public void onFailure(@Nonnull ApolloException e) {
-
+        handleFailure(e);
     }
 });
 ```
@@ -786,7 +786,7 @@ RxApollo.from(apolloClient.query(RepoQuery.builder().name("friendlyrobotnyc").bu
 
 ---
 
-#Version 1.0 ships today
+#Version 1.0 ships soon!
 ##380 commits
 ##1000s of tests
 ##18 contributors including devs from Shopify, Airbnb, NY Times
