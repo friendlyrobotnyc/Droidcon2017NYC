@@ -184,7 +184,46 @@ type Character {
 ```
 ---
 #[fit] You can also reuse fields in a fragment
-#insert fragment example
+
+```java
+{
+  leftColumn: hero(episode: EMPIRE) {
+    ...comparisonFields
+  }
+  rightColumn: hero(episode: JEDI) {
+    ...comparisonFields
+  }
+}
+
+fragment comparisonFields on Character {
+  name
+  appearsIn
+}
+```
+![right](blank.png)
+
+---
+#[fit] You can also reuse fields in a fragment
+
+
+```java
+{
+  leftColumn: hero(episode: EMPIRE) {
+    ...comparisonFields
+  }
+  rightColumn: hero(episode: JEDI) {
+    ...comparisonFields
+  }
+}
+
+fragment comparisonFields on Character {
+  name
+  appearsIn
+}
+```
+
+![right 120%](fragment_response.png)
+
 ---
 #**Walkthrough Time!**:
 ![left](octocat.png)
