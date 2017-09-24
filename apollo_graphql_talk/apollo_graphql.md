@@ -147,7 +147,7 @@ type Character {
 
 ---
 
-#[fit]GraphQL let's you combine resources in one request
+#GraphQL let's you combine resources in one request
 
 ```javascript
 {
@@ -160,28 +160,29 @@ type Character {
   }
 }
 ```
+
+![right](blank.png)
+
+
 ---
-#[fit]GraphQL let's you combine resources in one request
+
+
+#GraphQL let's you combine resources in one request
+
 ```javascript
 {
-  "data": {
-    "hero": {
-      "name": "R2-D2",
-      "friends": [
-        {
-          "name": "Luke Skywalker"
-        },
-        {
-          "name": "Han Solo"
-        },
-        {
-          "name": "Leia Organa"
-        }
-      ]
+  hero {
+    name
+    # Queries can have comments!
+    friends {
+      name
     }
   }
 }
 ```
+
+![right 110%](basic_response.png)
+
 ---
 #[fit] You can also reuse fields in a fragment
 
@@ -727,7 +728,12 @@ githubCall.enqueue(new ApolloCall.Callback<>() {
 - Can Set Max Cache Size
 - Useful for background updating to prefill cache
 
-#[fit] need code example of prefetch
+- Prefetching
+
+```java
+  apolloClient.prefetch(new RepoQuery("nytimes"));
+```
+
 ---
 #[fit]HTTP Caching is about as well as you can do in REST
 #[fit] Apollo Introduces a Normalized Cache 
