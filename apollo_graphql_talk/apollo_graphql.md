@@ -460,7 +460,7 @@ organization(login:”nyTimes”){
 ---
 
 #[fit]No CURL Needed
-##Most Graphql Servers have a GUI
+##Most Graphql Servers have a GUI (Graph**i**QL)
 ###https://developer.github.com/v4/explorer/
 ^[insert] Github Explorer Demo Gif/Video
 
@@ -471,6 +471,11 @@ organization(login:”nyTimes”){
 - Nullability Rules
 - Enum values
 - Types
+
+---
+Graph**i**QL is easy!
+
+![inline](graphiql_demo.mov)
 
 ---
 
