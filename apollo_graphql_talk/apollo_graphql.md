@@ -1,4 +1,4 @@
-
+build-lists: true
 
 ^theme:Libre white 
 ```javascript
@@ -8,11 +8,9 @@ Query StartTalk{ slide(id: "1") {
     Company
    }
 }
-```
-
 ```javascript
 {
-  Title: Landing Apollo on Android,
+  Title: Intro to GraphQL on Android,
   Authors:  [“Brian Plummer”,”Mike Nakhimovich,
   Company: New York Times
 }
@@ -25,200 +23,12 @@ Query StartTalk{ slide(id: "1") {
 ![right 75%](fresh_launch.gif)
 
 ---
-#[fit]Data loading has a lot to think about on Android
-<br>
+#Recently our team began moving from Restful APIs to instead use GraphQL
+
+#Before we dive into how we did it, lets start with a primer on what graphql is and why you should care
 
 ---
-#[fit]**Data loading has a lot to think about on Android**
-#<br><br><br><br><br><br><br><br>
-#* **Data Modeling** 
-#<br><br><br><br>
-#* **Storage:** disk + mem
-#<br><br><br><br>
-#* **Networking:** (retry and inflight)
-
-
----
-
-#Open Source can mitigate challenges
-#FOSS fill gaps in REST loading
-#_**OKhttp · RxJava · Retrofit · Immutables · Gson · Guava · SqlDelight/Brite · Store · Curl · JsonViewer.hu**_
----
-
-#**Walkthrough**:
-![left](octocat.png)
-
-#Typical data load from Github REST API using all those great  libraries
-
----
-
-#[fit]Start with Inspection
-
-#<br><br><br><br><br><br><br><br>
-
-#[fit] curl -i "https://api.github.com/repos/vmg/redcarpet/issues?state=closed" 
-
-![fit](json_viewer.png)
-
----
-^
-#Create your Value Objects with Immutables
-##**Error Prone even with Code Generation**
-```java
-
-interface Issue {
-    User user();
-    String url();
-
-
-    interface User {
-        long id();
-        String name();
-    }
-}
-```
-
----
-^
-#Create your Value Objects with Immutables
-##**Error Prone even with Code Generation**
-```java, [.highlight: 1,6]
-@Value.Immutable
-interface Issue {
-    User user();
-    String url();
-
-    @Value.Immutable
-    interface User {
-        long id();
-        String name();
-    }
-}
-```
-
----
-
-^NOTE: show how poorly data is structured and how big it is/why we need reflection free parsing
-
-#[fit] _**Parsing Response with Code Gen**_
-```java, [.highlight: 1]
-@Gson.TypeAdapters
-@Value.Immutable
-interface Issue {
-    User user();
-    String url();
-
-    @Value.Immutable
-    interface User {
-        long id();
-        String name();
-    }
-}
-```
-
----
-
-#[fit] Setting up Networking
-```java
- open fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): GithubApi {
-        return Retrofit.Builder()
-                .client(okHttpClient)
-                .baseUrl(BuildConfig.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build()
-                .create(GithubApi::class.java!!)}
-```
-
----
-#[fit]Disk Caching with SqlDelight/Brite 
-
-```javascript
-CREATE TABLE issue (
-    _id LONG  PRIMARY KEY AUTOINCREMENT,
-    id LONG NOT NULL,
-    url STRING,
-    title STRING,
-    comments INT NOT NUL
-}
-
-    select_all:
-    SELECT *
-    FROM issue;
-```
-
----
-#[fit]Disk Caching with SqlDelight/Brite 
-
-```java
-public abstract class Issue implements IssueModel {
-    public static final Mapper<Issue> MAPPER =
-            new Mapper<>((Mapper.Creator<Issue>) ImmutableIssue::of);
-
-    public static final class Marshal extends IssueMarshal {
-    }
-}
-```
-
----
-#[fit]Disk Caching with SqlDelight/Brite 
-
-```java
-long insertIssue(Issue issue) {
-        if (recordExists(Issue.TABLE_NAME, Issue.ID, String.valueOf(issue.id()))) {
-            return 0;
-        }
-
-        return db.insert(Issue.TABLE_NAME, new Issue.Marshal()
-                .url(issue.url())
-                .id(issue.id()));
-}
-
-```
-
----
-#Store
-## Memory/Disk Caching with Fresh/Get
-```java
-StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
-                .fetcher(fetcher)
-                .persister(persister)
-                .parser(parser)
-                .memoryPolicy(MemoryPolicy
-                        .builder()
-                        .setMemorySize(11L)
-                        .setExpireAfterWrite(TimeUnit.HOURS.toSeconds(24))
-                        .setExpireAfterTimeUnit(TimeUnit.SECONDS)
-                        .build())
-                .networkBeforeStale()
-                .open()
-```
-
----
-
-#Thats a good architecture
-#It's also not something we can expect a beginner to know
-![](overwhelmed.jpg)
-###Knowing all the right OSS is hard 
-
----
-#[fit]**Most Conterversial Slide**
-#[fit]REST is legacy tech
-##(It reminds me of java)
----
-
-#[fit] There's a new kid on the block
-#[fit] GraphQL
 ![fit](graphql.png)
-
----
-
-#GraphQL was create by Facebook as a reimagining of server/client data transfer
-
-Give front end developers an efficient way to query  only the data they want
-<br><br><br><br><br><br>Give server-side developers an efficient way to get their data out to their users.
-
----
 
 #What’s  GraphQL?
 
@@ -228,16 +38,26 @@ Give front end developers an efficient way to query  only the data they want
 - Works on iOS, Android, Web
 
 ---
-#[fit] GraphQL Basics 
-Describe your data
+![fit](graphql.png)
+#GraphQL was created by Facebook as a reimagining of server/client data transfer
 
-Ask for what you want
-
-Get predictable results
+Give front end developers an efficient way to ask for minimal data
+<br><br><br><br><br><br>Give server-side developers a robust way to get their data out to their users.
 
 ---
 
-#Describe your data
+[.build-lists: true]
+#GraphQL is As Easy as 1-2-3
+
+- Describe your data
+
+- Ask for what you want
+
+- Get predictable results
+
+---
+
+#Describe your data in a schema
 
 ```javascript
 
@@ -249,7 +69,7 @@ type Character {
 ```
 ---
 
-#Graphql Example Schema 
+#Describe your data in a schema
 
 ```javascript, [.highlight: 1]
 
@@ -262,7 +82,7 @@ type Character {
 * **Character** is a GraphQL Object Type, meaning it's a type with some fields. Most of the types in your schema will be object types.
 
 ---
-#Graphql Example Schema 
+#Describe your data in a schema
 
 ```javascript, [.highlight: 2,3]
 
@@ -317,77 +137,298 @@ type Character {
 * **[Episode]!** represents an array of Episode objects. Since it is also non-nullable, you can always expect an array (with zero or more items) when you query the appearsIn field.
 
 ---
-#Ask for what you need, get exactly that
+#Ask for what you need
 ![inline](basic_graphql.mov)
 
-^top piece....is enalbled...showing query
+#get predictable results
+
+---
+
+#[fit]GraphQL let's you combine resources in one request
+
+```javascript
+{
+  hero {
+    name
+    # Queries can have comments!
+    friends {
+      name
+    }
+  }
+}
+```
+---
+#[fit]GraphQL let's you combine resources in one request
+```javascript
+{
+  "data": {
+    "hero": {
+      "name": "R2-D2",
+      "friends": [
+        {
+          "name": "Luke Skywalker"
+        },
+        {
+          "name": "Han Solo"
+        },
+        {
+          "name": "Leia Organa"
+        }
+      ]
+    }
+  }
+}
+```
+---
+#[fit] You can also reuse fields in a fragment
+#insert fragment example
+---
+#**Walkthrough Time!**:
+![left](octocat.png)
+
+#Loading data from Github using Rest vs GraphQL
+---
+#[fit]On Any Platform Data Loading is Multi Step
+1. Model Data 
+2. Network
+3. Transform
+4. Persist
+
+
+---
+#[fit] How does REST look on Android?
+---
+
+#Like a lot of dependencies
+| Data Modeling | Networking | Storage | Transform |
+| --- | --- | --- | --- |
+| Immutables |  OKhttp | Store | Gson|
+| Curl | Retrofit | SqlDelight | RxJava |
+
+#Yes those are all needed :joy:
 
 
 ---
 
-#[fit] Now lets see it in Android
+#[fit]Start with Inspection 
+#<br><br><br><br><br><br><br>
+#[fit] _**curl -i "https://api.github.com/repos/vmg/redcarpet/issues?state=closed"**_ 
+
+![fit](json_viewer.png)
 
 ---
-###We can't since Facebook did not open source an Android Client :disappointed:
+^
+#Model Your Data
+```java
+
+interface Issue {
+    User user();
+    String url();
 
 
-![ original 80%](no_results.png)
+    interface User {
+        long id();
+        String name();
+    }
+}
+```
+####**Error Prone even with Code Generation**
+---
+^
+#Data Modeling with Immutables
+```java, [.highlight: 1,6]
+@Value.Immutable
+interface Issue {
+    User user();
+    String url();
+
+    @Value.Immutable
+    interface User {
+        long id();
+        String name();
+    }
+}
+```
+####**Error Prone even with Code Generation**
+
+---
+
+^NOTE: show how poorly data is structured and how big it is/why we need reflection free parsing
+
+#[fit] Data Parsing with Gson
+```java, [.highlight: 1]
+@Gson.TypeAdapters
+@Value.Immutable
+interface Issue {
+    User user();
+    String url();
+
+    @Value.Immutable
+    interface User {
+        long id();
+        String name();
+    }
+}
+```
+
+---
+
+# Networking
+```java
+ open fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): GithubApi {
+        return Retrofit.Builder()
+                .client(okHttpClient)
+                .baseUrl(BuildConfig.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build()
+                .create(GithubApi::class.java!!)}
+```
+
+---
+#Storage
+
+```sql
+CREATE TABLE issue (
+    _id LONG  PRIMARY KEY AUTOINCREMENT,
+    id LONG NOT NULL,
+    url STRING,
+    title STRING,
+    comments INT NOT NULL
+}
+```
+
+---
+#Storage
+
+```java
+public abstract class Issue implements IssueModel {
+    public static final Mapper<Issue> MAPPER =
+            new Mapper<>((Mapper.Creator<Issue>) 
+            ImmutableIssue::of);
+
+    public static final class Marshal extends IssueMarshal {
+    }
+}
+```
+
+---
+#Storage
+
+```java
+long insertIssue(Issue issue) {
+        if (recordExists(Issue.TABLE_NAME, Issue.ID, String.valueOf(issue.id()))) {
+            return 0;
+        }
+
+        return db.insert(Issue.TABLE_NAME, new Issue.Marshal()
+                .url(issue.url())
+                .id(issue.id()));
+}
+
+```
+
+---
+#Storage - Memory
+```javascript
+StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
+                .fetcher(fetcher)
+                .persister(persister)
+                .parser(parser)
+                .memoryPolicy(MemoryPolicy
+                        .builder()
+                        .setMemorySize(11L)
+                        .setExpireAfterWrite(TimeUnit.HOURS.toSeconds(24))
+                        .setExpireAfterTimeUnit(TimeUnit.SECONDS)
+                        .build())
+                .networkBeforeStale()
+                .open()
+```
+
+---
+
+#[fit]Thats a good architecture
+#It's also not something we can expect a beginner to know
+![](overwhelmed.jpg)
+
+---
+#[fit]REST feels like legacy tech
+##It reminds me of Java with all these great tools & hours of setup to do anything
+---
+
+#[fit] Like we said, there's a new kid on the block
+#[fit] GraphQL
+![fit](graphql.png)
+
+---
+
+
+#[fit] Now lets see GraphQL on Android
+
+---
+#_**We can't since Facebook did not open source an Android Client :disappointed:**_
+
+
+![fit](no_results.png)
+
+---
+
+#_**Community to the Rescue!**_
+
+
+![fit](no_results.png)
 
 ---
 ![ original 50%](apollo_adroid.png)
 
 ###Introducing Apollo-Android GraphQL
-###<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>_**Apollo Android**_ was developed by AirBnb, Shopify & New York Times as a culmination of tools, libraries, and patterns to assist in fetching data from GraphQL servers
+###<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>_**Apollo Android**_ was developed by Shopify, New York Times, & AirBnb as an **Open Source** culmination of tools, libraries, and patterns to assist in fetching data from   GraphQL servers
 
 
 
 ---
+![fit](graphql.png)
 
-
-#Now Let's see a demo using Apollo & Github's GraphQL API
-##_**OKhttp | RxJava | Apollo-Android**_
-###You Ain't Gonna Need It
-#_**~~Retrofit~~ | ~~Immutables~~| ~~Gson~~ | ~~Guava~~ | ~~SqlDelight/Brite~~ | ~~Store~~ | ~~Curl~~ | ~~JsonViewer.hu~~**_
----
-^Brian: Mike is a hardass and expects all the above when I code
-#[fit]Demo: Same with Apollo in 5 minutes
-^add apollo dep
-^instantiate apollo client
-^use igraphql to discover + mold your query
-^add to android project
-^create rxApolloQuery and subscribe to it
-
----
-
-#[fit] Now for some explanations
-
----
 #What is Apollo-Android?
-##A strongly-typed, caching GraphQL client for Android
-###Rich support of Types and Type Mappings
-###Builders to create queries
-###Query Validation at compilation 
+- A strongly-typed, caching GraphQL client for Android
+- Rich support of Types and Type Mappings
+- Builders to create queries
+- Query Validation at compilation 
+- Built by Android Devs for Android Devs
 
 ---
+![fit](graphql.png)
 #Created based on Facebook's GraphQl Spec
-##Works with any Graphql Query
-##Apollo Android Supports:
-###Fragments
-###Union Types
-###Nullability
-###Deprecation
+- Works with any Graphql Query
+- Apollo Android Supports:
+- Fragments
+- Union Types
+- Nullability
+- Deprecation
+
+---
+
+#Apollo Reduces setup to work with a backend
+
+| Data Modeling | Networking | Storage | Transform |
+| --- | --- | --- | --- |
+| Github Explorer |  OKhttp | Apollo | RxJava|
+| Apollo  | Apollo | Apollo |  Apollo|
+
+
+###You Ain't Gonna Need It
+_**~~Retrofit~~ | ~~Immutables~~| ~~Gson~~ | ~~Guava~~ | ~~SqlDelight/Brite~~ | ~~Store~~ | ~~Curl~~ | ~~JsonViewer.hu~~**_
 
 ---
 #Apollo-Android has **2 main parts**
-## **Gradle Plugin** Apollo Code Gen
-###Plugin  To generate code
-## **Runtime** Apollo Client
-###For executing operations
----
+- **Gradle Plugin** Apollo Code Gen Plugin  To generate code.
+- **Runtime** Apollo Client For executing operations
 
-<br><br><br><br><br><br><br><br><br>
-#[fit]Using Apollo-Android
+
+---
+#[fit]Using Apollo
 #like a boss
+![fit](success.jpg)
 
 ---
 #Add Apollo dependencies
@@ -405,7 +446,7 @@ compile 'com.apollographql.apollo:apollo-rx-support:0.4.1'
 ```
 
 --- 
-#Basics - Start with a query
+#Create a standard GraphQL query
 ## Queries have params and define shape of response 
 ```java
 organization(login:”nyTimes”){
@@ -416,79 +457,61 @@ organization(login:”nyTimes”){
 ```
 ---
 
-#[fit]You can explore & build queries using graphiql
+#[fit]No CURL Needed
 ##Most Graphql Servers have a GUI
+###https://developer.github.com/v4/explorer/
 ^[insert] Github Explorer Demo Gif/Video
 
 ---
 
-#Explorer shows you anything that exists in the Schema
-###Nullability Rules
-###Enum values
-###Data Structure
-###Types
+#Explorer is for exploring schema and building queries
+- Shape of Response
+- Nullability Rules
+- Enum values
+- Types
+
 ---
 
-#Fragments  = Partials, great for deduping code
-##TODO Brian fill in code sample 
----
-#[fit]**Add Schema & Query.graphql to project and compile**
+#[fit]**Add Schema & RepoQuery.graphql to project & compile**
+#Image needed
  ---
 
-#Apollo writes code so you don't have to make errors writing it yourself
----
-#[fit]Apollo Gradle Plugin  will create for you RepoQuery.java 
-#[fit]a Java representation of Request|Response|Mapper
-```java
+#Apollo writes code so you don't have to
 
-@Generated("Apollo GraphQL")
-public final class RepoQuery implements Query<RepoQuery.Data, RepoQuery.Data, RepoQuery.Variables> {
-  public static final String OPERATION_DEFINITION = "query Repo($name: String!) {\n"
-      + "  organization(login: $name) {\n"
-      + "    __typename\n"
-      + "    repositories(first: 6, orderBy: {direction: DESC, field: STARGAZERS}) {\n"
-      + "      __typename\n"
-      + "      totalCount\n"
-      + "      edges {\n"
-      + "        __typename\n"
-      + "        node {\n"
-      + "          __typename\n"
-      + "          stargazers {\n"
-      + "            __typename\n"
-      + "            totalCount\n"
-      + "          }\n"
-      + "          name\n"
-      + "        }\n"
-      + "      }\n"
-      + "    }\n"
-      + "  }\n"
-      + "}";
-
-  public static final String QUERY_DOCUMENT = OPERATION_DEFINITION;
-
-  private static final OperationName OPERATION_NAME = new OperationName() {
-    @Override
-    public String name() {
-      return "Repo";
+```kotlin
+ private fun CodeGenerationIR.writeJavaFiles(context: CodeGenerationContext, outputDir: File,
+      outputPackageName: String?) {
+    fragments.forEach {
+      val typeSpec = it.toTypeSpec(context.copy())
+      JavaFile.builder(context.fragmentsPackage, typeSpec).build().writeTo(outputDir)
     }
-  };
 
-  private final RepoQuery.Variables variables;
+    typesUsed.supportedTypeDeclarations().forEach {
+      val typeSpec = it.toTypeSpec(context.copy())
+      JavaFile.builder(context.typesPackage, typeSpec).build().writeTo(outputDir)
+    }
 
-  public RepoQuery(@Nonnull String name) {
-    Utils.checkNotNull(name, "name == null");
-    variables = new RepoQuery.Variables(name);
+    if (context.customTypeMap.isNotEmpty()) {
+      val typeSpec = CustomEnumTypeSpecBuilder(context.copy()).build()
+      JavaFile.builder(context.typesPackage, typeSpec).build().writeTo(outputDir)
+    }
+
+    operations.map { OperationTypeSpecBuilder(it, fragments, context.useSemanticNaming) }
+        .forEach {
+          val packageName = outputPackageName ?: it.operation.filePath.formatPackageName()
+          val typeSpec = it.toTypeSpec(context.copy())
+          JavaFile.builder(packageName, typeSpec).build().writeTo(outputDir)
+        }
   }
-  ...
   ```
-
-
 ---
-#MyQuery.Builder
-##Builder to create your request object
-```java
-query = RepoQuery.builder().name("friendlyrobotnyc").build()
-...
+
+#[fit]Query.Builder - For Creating your request instance
+```kotlin
+///api
+val query = RepoQuery.builder.name("friendlyrobotnyc").build()
+
+//Generated Code
 
 public static final class Builder {
     private @Nonnull String name;
@@ -509,8 +532,35 @@ public static final class Builder {
 ```
 
 ---
-#MyQuery.Data = Effective Java Value Object
-##Apollo even generates comments from schema
+
+#[fit]Notice how our request param `name` is validated
+```kotlin, [.highlight: 18]
+///api
+val query = RepoQuery.builder.name("friendlyrobotnyc").build()
+
+//Generated Code
+
+public static final class Builder {
+    private @Nonnull String name;
+
+    Builder() {
+    }
+
+    public Builder name(@Nonnull String name) {
+      this.name = name;
+      return this;
+    }
+
+    public RepoQuery build() {
+      if (name == null) throw new IllegalStateException("name can't be null");
+      return new RepoQuery(name);
+    }
+  }
+```
+
+
+---
+#MyQuery.Data aka Effective Java Value Object
 ```java
  public static class Repositories {
     final @Nonnull String __typename;
@@ -539,8 +589,7 @@ public static final class Builder {
 ```
 
 ---
-#MyQuery.Mapper
-##Reflection Free parsing of a Graphql Response
+#[fit]Query.Mapper - Reflection Free Parser
 ```java
  public static final class Mapper implements ResponseFieldMapper<Repositories> {
       final Edge.Mapper edgeFieldMapper = new Edge.Mapper();
@@ -561,36 +610,35 @@ public static final class Builder {
           }
         });
         return new Repositories(__typename, totalCount, edges);
-      }
-    }
+      }}
 
 ```
 
-###Can parse 20mb response without OOM
+Can parse 20mb response without OOM
 
 
 ---
-#[fit]Getting a Query Response from a Server
+#[fit]We have our Data Models
+#[fit]How do we get a response from Github?
 
 ---
 
-#Creating an Apollo Client
-##Conventions over Configuration
+#Building an Apollo Client
 ```java
-apolloClient= ApolloClient.builder()
-                .serverUrl("https://api.github.com/graphql")
-                .okHttpClient(provideOkhttp())
+ApolloClient.builder()
+                .serverUrl("https://api.github.com/graphql)
+                .okHttpClient(okhttp)
                 .build();
 ```
 ---
 
 #Apollo’s api is very similar to Okhttp
-Stateless Apollo Client that can create an `ApolloCall`
+##Stateless Apollo Client that can create an `ApolloCall`
 
-```java
+```java, [.highlight: 1]
 query = RepoQuery.builder().name("friendlyrobotnyc").build()
 
- ApolloQueryCall githubCall = apolloClient.query(query);
+ApolloQueryCall githubCall = apolloClient.query(query);
 
 githubCall.enqueue(new ApolloCall.Callback<>() {
     @Override
@@ -605,41 +653,124 @@ githubCall.enqueue(new ApolloCall.Callback<>() {
 });
 ```
 ---
+#Apollo’s api is very similar to Okhttp
+##Stateless Apollo Client that can create an `ApolloCall`
 
+```java, [.highlight: 3]
+query = RepoQuery.builder().name("friendlyrobotnyc").build()
 
-#Nullability
-##Graphql has nullable fields (show example)
-##Apollo can represent as @Nullable
-##Or as Optional<T> (Java, Guava, Shaded)
+ApolloQueryCall githubCall = apolloClient.query(query);
+
+githubCall.enqueue(new ApolloCall.Callback<>() {
+    @Override
+    public void onResponse(@Nonnull Response<> response) {
+        
+    }
+
+    @Override
+    public void onFailure(@Nonnull ApolloException e) {
+
+    }
+});
+```
 ---
-#How About Caching -  2 types
-*HTTP
-*Normalized
+#Apollo’s api is very similar to Okhttp
+##Stateless Apollo Client that can create an `ApolloCall`
+
+```java, [.highlight: 5-15]
+query = RepoQuery.builder().name("friendlyrobotnyc").build()
+
+ApolloQueryCall githubCall = apolloClient.query(query);
+
+githubCall.enqueue(new ApolloCall.Callback<>() {
+    @Override
+    public void onResponse(@Nonnull Response<> response) {
+        
+    }
+
+    @Override
+    public void onFailure(@Nonnull ApolloException e) {
+
+    }
+});
+```
+---
+#Storage with Apollo
+#2 types of caches
+-HTTP
+-Normalized
 
 ---
 #Http Caching
-##Similar to OKHTTP Cache but for POST requests
-##Streams response to cache same time as parsing
-##Can Set Cache Size
+-Similar to OKHTTP Cache (LRU) 
+-Streams response to cache same time as parsing
+-Can Set Max Cache Size
+-Useful for background updating to prefill cache
+
+#[fit] need code example of prefetch
 ---
-#Prefetch into cache
-##Useful for background updates of lots of data
+#[fit]HTTP Caching is about as well as you can do in REST
+# Apollo Introduces a Normalized Cache - Apollo Store
 ---
-#Apollo Store - Normalized Cache
-##Post Parsing
-##Caches each field individually
-##  Allows multiple queries to share same cached values
+#Apollo Store
+-Caching is done Post Parsing
+-Each field is Cached Individually
+-Allows multiple queries to share same cached values
+-Great for things like Master/Detail
+-Apollo ships with both an in memory and a disk implementation of an Apollo Store
+
 ---
-#Two implementations of Normalized Cache
-##In Memory using Guava Caches (useful for rotation)
-##Persistent in SqlLite
-##Configurable on a per request basis
+#Apollo Store
+-Each Object in Response will have its own record with ID
+-All Scalars will be merged together as fields
+-When we are reading from Apollo, it will seamlessly read from Apollo Store or network
+
+---
+#Settings Up Bi-Level Caching with Apollo Store
+```java
+//Create DB
+ApolloSqlHelper apolloSqlHelper = ApolloSqlHelper.create(context, "db_name");
+//Create NormalizedCacheFactory
+NormalizedCacheFactory normalizedCacheFactory = new LruNormalizedCacheFactory(EvictionPolicy.NO_EVICTION)
+                                                    .chain(new SqlNormalizedCacheFactory(apolloSqlHelper));
+//Create the cache key resolver
+CacheKeyResolver<Map<String, Object>> resolver = {
+            String id = (String) objectSource.get("id");
+            if (id == null || id.isEmpty()) {
+              return CacheKey.NO_KEY;
+            }
+            return CacheKey.from(id);
+        }
+//Build the Apollo Client
+ApolloClient apolloClient = ApolloClient.builder()
+                                    .serverUrl("/")
+                                    .normalizedCache(cacheFactory, resolver)
+                                    .okHttpClient(okHttpClient)
+                                    .build();
+```
+---
+#Don't like our Cache? BYO Cache
+```java
+public abstract class NormalizedCache {
+
+@Nullable public abstract Record loadRecord(@Nonnull String key, @Nonnull CacheHeaders cacheHeaders)
+
+@Nonnull public Collection<Record> loadRecords(@Nonnull Collection<String> keys, @Nonnull CacheHeaders cacheHeaders)
+
+@Nonnull public abstract Set<String> merge(@Nonnull Record record, @Nonnull CacheHeaders cacheHeaders)
+
+public abstract void clearAll()
+
+public abstract boolean remove(@Nonnull CacheKey cacheKey)
+
+```
+
 ---
 #Apollo Is Reactive
 ##QueryWatcher will emit new response when there are changes to the normalized cache records this query depends on or when mutation call occurs
 
 ---
-#RxJava 1 & 2 support is built in
+#Bonus: Includes RxJava Bindings
 ```java
 RxApollo.from(apolloClient.query(RepoQuery.builder().name("friendlyrobotnyc").build()))
        .map(dataResponse -> dataResponse
@@ -649,28 +780,9 @@ RxApollo.from(apolloClient.query(RepoQuery.builder().name("friendlyrobotnyc").bu
        .subscribe(view::showRepositories, view::showError)
 ```
 #RxApollo response can be transformed into LiveData
----
-#Mutations
-##Queries are for getting Data Mutations are for making changes on server
-## Demo: Mutation
----
-#Optimistic Updates
-##Mutations can update data locally prior to request being sent
-##If failure occurs Apollo Store will rollback changes
----
-#How its Made:
-##Gradle plugin with code gen written in Kotlin
-##ApolloClient borrows heavily from OKHTTP (fill in details)
-##ApolloCall is similar to OKhttpCall (interceptors all the way down)
 
 ---
 
-#Why do we need Apollo Code Gen
-##Generates Java Request/Response POJOs & Parsers
-###<br><br>
-###Written in Kotlin with :heart:
-
----
 #Version 1.0 ships today
 ##380 commits
 ##1000s of tests
