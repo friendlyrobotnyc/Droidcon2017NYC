@@ -501,9 +501,8 @@ organization(login:”nyTimes”){
 ---
 
 #[fit]Leave your CURL at home
-##Most Graphql Servers have a GUI
+##Most Graphql Servers have a GUI (Graph**i**QL)
 ###https://developer.github.com/v4/explorer/
-^[insert] Github Explorer Demo Gif/Video
 
 ---
 
@@ -521,7 +520,7 @@ Graph**i**QL is easy!
 ---
 
 #[fit]**Add Schema & RepoQuery.graphql to project & compile**
-#Image needed
+![inline](query_schema_location.png)
  ---
 ![left](ivan.png)
 
@@ -584,7 +583,7 @@ public static final class Builder {
 ---
 
 #[fit]Notice how our request param `name` is validated
-```kotlin, [.highlight: 18]
+```kotlin, [.highlight: 17]
 ///api
 val query = RepoQuery.builder.name("nytimes").build()
 
