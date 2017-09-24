@@ -436,8 +436,8 @@ StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
 #Apollo-Android
 - Built by Android Devs for Android Devs
 - A strongly-typed, caching GraphQL client for Android
-- Retrofitich support of Types and Type Mappings
-- Builders to create queries
+- Rich support of Types and Type Mappings
+- Code Generation for the Messy Parts
 - Query Validation at compilation 
 
 ---
@@ -469,7 +469,7 @@ _**~~Retrofit~~ | ~~Immutables~~| ~~Gson~~ | ~~Guava~~ | ~~SqlDelight/Brite~~ | 
 
 
 ---
-#[fit]Using Apollo
+#[fit]Using Apollo-Android
 #like a boss
 ![fit](success.jpg)
 
@@ -500,7 +500,7 @@ organization(login:”nyTimes”){
 ```
 ---
 
-#[fit]No CURL Needed
+#[fit]Leave your CURL at home
 ##Most Graphql Servers have a GUI
 ###https://developer.github.com/v4/explorer/
 ^[insert] Github Explorer Demo Gif/Video
