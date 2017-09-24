@@ -141,7 +141,7 @@ type Character {
 
 ---
 #Ask for what you need
-![inline](basic_graphql.mov)
+![inline](basic_graphql.gif)
 
 #get predictable results
 
@@ -538,7 +538,7 @@ public static final class Builder {
 #[fit]Notice how our request param `name` is validated
 ```kotlin, [.highlight: 18]
 ///api
-val query = RepoQuery.builder.name("friendlyrobotnyc").build()
+val query = RepoQuery.builder.name("nytimes").build()
 
 //Generated Code
 
@@ -638,7 +638,7 @@ ApolloClient.builder()
 ##Stateless Apollo Client that can create an `ApolloCall`
 
 ```java, [.highlight: 1]
-query = RepoQuery.builder().name("friendlyrobotnyc").build()
+query = RepoQuery.builder().name("nytimes").build()
 
 ApolloQueryCall githubCall = apolloClient.query(query);
 
@@ -659,7 +659,7 @@ githubCall.enqueue(new ApolloCall.Callback<>() {
 ##Stateless Apollo Client that can create an `ApolloCall`
 
 ```java, [.highlight: 3]
-query = RepoQuery.builder().name("friendlyrobotnyc").build()
+query = RepoQuery.builder().name("nytimes").build()
 
 ApolloQueryCall githubCall = apolloClient.query(query);
 
@@ -680,7 +680,7 @@ githubCall.enqueue(new ApolloCall.Callback<>() {
 ##Stateless Apollo Client that can create an `ApolloCall`
 
 ```java, [.highlight: 5-15]
-query = RepoQuery.builder().name("friendlyrobotnyc").build()
+query = RepoQuery.builder().name("nytimes").build()
 
 ApolloQueryCall githubCall = apolloClient.query(query);
 
@@ -775,7 +775,7 @@ public abstract boolean remove(@Nonnull CacheKey cacheKey)
 ---
 #Bonus: Includes RxJava Bindings
 ```java
-RxApollo.from(apolloClient.query(RepoQuery.builder().name("friendlyrobotnyc").build()))
+RxApollo.from(apolloClient.query(RepoQuery.builder().name("nytimes").build()))
        .map(dataResponse -> dataResponse
        .data()
        .organization()
