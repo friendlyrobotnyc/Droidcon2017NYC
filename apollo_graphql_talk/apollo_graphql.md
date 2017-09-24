@@ -24,7 +24,7 @@ Query DroidConNYC{ slide(id: "1")
 ![right 75%](fresh_launch.gif)
 
 ---
-#Recently our team began moving from Restful APIs to instead use GraphQL
+#Recently, our team began moving from Restful APIs to instead use GraphQL
 ---
 
 #Before we dive into how we did it, lets start with a primer on what graphql is and why you should care
@@ -398,12 +398,14 @@ StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
 ##It reminds me of Java with all these great tools & hours of setup to do anything
 ---
 
-#[fit] Like we said, there's a new kid on the block
+#[fit] Thanks to Facebook, there's a new kid on the block
 #[fit] GraphQL
 ![fit](graphql.png)
 
 ---
+![](graphql.png)
 
+![](android.png)
 
 #[fit] Now lets see GraphQL on Android
 
@@ -430,13 +432,12 @@ StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
 
 ---
 ![fit](graphql.png)
-
-#What is Apollo-Android?
+#Apollo-Android
+- Built by Android Devs for Android Devs
 - A strongly-typed, caching GraphQL client for Android
-- Rich support of Types and Type Mappings
+- Retrofitich support of Types and Type Mappings
 - Builders to create queries
 - Query Validation at compilation 
-- Built by Android Devs for Android Devs
 
 ---
 ![fit](graphql.png)
@@ -521,6 +522,7 @@ Graph**i**QL is easy!
 #[fit]**Add Schema & RepoQuery.graphql to project & compile**
 ![inline](query_schema_location.png)
  ---
+![left](ivan.png)
 
 #Apollo writes code so you don't have to
 
@@ -550,15 +552,16 @@ Graph**i**QL is easy!
         }
   }
   ```
+#[fit] Actually Ivan(sav007) does he's awesome 
+
 ---
 
-#[fit]Query.Builder - For Creating your request instance
+#[fit]Builder - For Creating your request instance
 ```kotlin
 ///api
 val query = RepoQuery.builder.name("nytimes").build()
 
 //Generated Code
-
 public static final class Builder {
     private @Nonnull String name;
 
@@ -585,7 +588,6 @@ public static final class Builder {
 val query = RepoQuery.builder.name("nytimes").build()
 
 //Generated Code
-
 public static final class Builder {
     private @Nonnull String name;
 
@@ -606,7 +608,7 @@ public static final class Builder {
 
 
 ---
-#MyQuery.Data aka Effective Java Value Object
+#Response Models 
 ```java
  public static class Repositories {
     final @Nonnull String __typename;
@@ -635,7 +637,7 @@ public static final class Builder {
 ```
 
 ---
-#[fit]Query.Mapper - Reflection Free Parser
+#Mapper - Reflection Free Parser
 ```java
  public static final class Mapper implements ResponseFieldMapper<Repositories> {
       final Edge.Mapper edgeFieldMapper = new Edge.Mapper();
@@ -662,11 +664,9 @@ public static final class Builder {
 
 Can parse 20mb response without OOM
 
-
 ---
-#[fit]We have our Data Models
-#[fit]How do we get a response from Github?
-
+#[fit]Querying Github's API
+#[fit]With Apollo Client
 ---
 
 #Building an Apollo Client
@@ -677,51 +677,24 @@ ApolloClient.builder()
                 .build();
 ```
 ---
-
-#Apollo’s api is very similar to Okhttp
-##Stateless Apollo Client that can create an `ApolloCall`
+#Querying a Backend
 
 ```java, [.highlight: 1]
 query = RepoQuery.builder().name("nytimes").build()
 
-ApolloQueryCall githubCall = apolloClient.query(query);
-
-githubCall.enqueue(new ApolloCall.Callback<>() {
-    @Override
-    public void onResponse(@Nonnull Response<> response) {
-        handleResponse(response);
-    }
-
-    @Override
-    public void onFailure(@Nonnull ApolloException e) {
-        handleFailure(e);  
-    }
-});
 ```
+
 ---
-#Apollo’s api is very similar to Okhttp
-##Stateless Apollo Client that can create an `ApolloCall`
+#Querying a Backend
 
 ```java, [.highlight: 3]
 query = RepoQuery.builder().name("nytimes").build()
 
 ApolloQueryCall githubCall = apolloClient.query(query);
 
-githubCall.enqueue(new ApolloCall.Callback<>() {
-    @Override
-    public void onResponse(@Nonnull Response<> response) {
-        handleResponse(response);
-    }
-
-    @Override
-    public void onFailure(@Nonnull ApolloException e) {
-        handleFailure(e);
-    }
-});
 ```
 ---
-#Apollo’s api is very similar to Okhttp
-##Stateless Apollo Client that can create an `ApolloCall`
+#Querying a Backend
 
 ```java, [.highlight: 5-15]
 query = RepoQuery.builder().name("nytimes").build()
@@ -741,6 +714,8 @@ githubCall.enqueue(new ApolloCall.Callback<>() {
 });
 ```
 ---
+#Apollo Handles Storage as well
+---
 #Storage with Apollo is done through Caches
 - HTTP
 - Normalized
@@ -755,21 +730,23 @@ githubCall.enqueue(new ApolloCall.Callback<>() {
 #[fit] need code example of prefetch
 ---
 #[fit]HTTP Caching is about as well as you can do in REST
-# Apollo Introduces a Normalized Cache - Apollo Store
+#[fit] Apollo Introduces a Normalized Cache 
+#[fit]Apollo Store
 
 ---
 #Apollo Store
-- Caching is done Post Parsing
-- Each field is Cached Individually
 - Allows multiple queries to share same cached values
 - Great for things like Master/Detail
+- Caching is done Post Parsing
+- Each field is Cached Individually
 - Apollo ships with both an in memory and a disk implementation of an Apollo Store
+- You can even use both at same time
 
 ---
-#Apollo Store
--Each Object in Response will have its own record with ID
--All Scalars will be merged together as fields
--When we are reading from Apollo, it will seamlessly read from Apollo Store or network
+#How Does Apollo Store Work?
+- Each Object in Response will have its own record with ID
+- All Scalars will be merged together as fields
+- When we are reading from Apollo, it will seamlessly read from Apollo Store or network
 
 ---
 #Settings Up Bi-Level Caching with Apollo Store
