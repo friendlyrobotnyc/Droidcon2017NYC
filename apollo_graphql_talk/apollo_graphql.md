@@ -480,7 +480,7 @@ Graph**i**QL is easy!
 ---
 
 #[fit]**Add Schema & RepoQuery.graphql to project & compile**
-#Image needed
+![inline](query_schema_location.png)
  ---
 
 #Apollo writes code so you don't have to
