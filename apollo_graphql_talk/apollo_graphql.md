@@ -24,7 +24,7 @@ Query DroidConNYC{ slide(id: "1")
 ![right 75%](fresh_launch.gif)
 
 ---
-#Recently our team began moving from Restful APIs to instead use GraphQL
+#Recently, our team began moving from Restful APIs to instead use GraphQL
 ---
 
 #Before we dive into how we did it, lets start with a primer on what graphql is and why you should care
@@ -391,13 +391,12 @@ StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
 
 ---
 ![fit](graphql.png)
-
 #What is Apollo-Android?
+- Built by Android Devs for Android Devs
 - A strongly-typed, caching GraphQL client for Android
 - Rich support of Types and Type Mappings
 - Builders to create queries
 - Query Validation at compilation 
-- Built by Android Devs for Android Devs
 
 ---
 ![fit](graphql.png)
