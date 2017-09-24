@@ -1,20 +1,21 @@
 build-lists: true
 
-^theme:Libre white 
 ```javascript
-Query StartTalk{ slide(id: "1") {
+Query DroidConNYC{ slide(id: "1") 
+   {
     Title
     Authors
     Company
    }
 }
-```javascript
+
 {
   Title: Intro to GraphQL on Android,
-  Authors:  [“Brian Plummer”,”Mike Nakhimovich,
+  Authors:  [“Brian Plummer”,”Mike Nakhimovich],
   Company: New York Times
 }
 ```
+
 ---
 
 #We work at NYTimes
@@ -24,6 +25,7 @@ Query StartTalk{ slide(id: "1") {
 
 ---
 #Recently our team began moving from Restful APIs to instead use GraphQL
+---
 
 #Before we dive into how we did it, lets start with a primer on what graphql is and why you should care
 
@@ -45,6 +47,7 @@ Give front end developers an efficient way to ask for minimal data
 <br><br><br><br><br><br>Give server-side developers a robust way to get their data out to their users.
 
 ---
+![fit](graphql.png)
 
 [.build-lists: true]
 #GraphQL is As Easy as 1-2-3
@@ -96,7 +99,7 @@ type Character {
 
 ---
 
-#Graphql Example Schema 
+#Describe your data in a schema
 
 ```javascript, [.highlight: 2]
 
@@ -188,7 +191,7 @@ type Character {
 
 #Loading data from Github using Rest vs GraphQL
 ---
-#[fit]On Any Platform Data Loading is Multi Step
+#[fit]On Any Platform Data Loading can be broken down into
 1. Model Data 
 2. Network
 3. Transform
@@ -196,7 +199,7 @@ type Character {
 
 
 ---
-#[fit] How does REST look on Android?
+#[fit] How does REST  look on Android?
 ---
 
 #Like a lot of dependencies
@@ -366,7 +369,7 @@ StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
 #[fit] Now lets see GraphQL on Android
 
 ---
-#_**We can't since Facebook did not open source an Android Client :disappointed:**_
+#_**We can't since Facebook didn't open source an Android Client :disappointed:**_
 
 
 ![fit](no_results.png)
@@ -400,7 +403,6 @@ StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
 ![fit](graphql.png)
 #Created based on Facebook's GraphQl Spec
 - Works with any Graphql Query
-- Apollo Android Supports:
 - Fragments
 - Union Types
 - Nullability
@@ -695,29 +697,29 @@ githubCall.enqueue(new ApolloCall.Callback<>() {
 });
 ```
 ---
-#Storage with Apollo
-#2 types of caches
--HTTP
--Normalized
+#Storage with Apollo is done through Caches
+- HTTP
+- Normalized
 
 ---
 #Http Caching
--Similar to OKHTTP Cache (LRU) 
--Streams response to cache same time as parsing
--Can Set Max Cache Size
--Useful for background updating to prefill cache
+- Similar to OKHTTP Cache (LRU) 
+- Streams response to cache same time as parsing
+- Can Set Max Cache Size
+- Useful for background updating to prefill cache
 
 #[fit] need code example of prefetch
 ---
 #[fit]HTTP Caching is about as well as you can do in REST
 # Apollo Introduces a Normalized Cache - Apollo Store
+
 ---
 #Apollo Store
--Caching is done Post Parsing
--Each field is Cached Individually
--Allows multiple queries to share same cached values
--Great for things like Master/Detail
--Apollo ships with both an in memory and a disk implementation of an Apollo Store
+- Caching is done Post Parsing
+- Each field is Cached Individually
+- Allows multiple queries to share same cached values
+- Great for things like Master/Detail
+- Apollo ships with both an in memory and a disk implementation of an Apollo Store
 
 ---
 #Apollo Store
@@ -748,6 +750,7 @@ ApolloClient apolloClient = ApolloClient.builder()
                                     .okHttpClient(okHttpClient)
                                     .build();
 ```
+
 ---
 #Don't like our Cache? BYO Cache
 ```java
