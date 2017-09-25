@@ -431,11 +431,11 @@ StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
 ---
 ![fit](graphql.png)
 #Apollo-Android
-- Built by Android Devs for Android Devs
+- Built by Android devs for Android devs
 - A strongly-typed, caching GraphQL client for Android
-- Rich support of Types and Type Mappings
-- Code Generation for the Messy Parts
-- Query Validation at compilation
+- Rich support for types and type mappings
+- Code generation for the messy parts
+- Query validation at compilation
 
 ---
 ![fit](graphql.png)
@@ -460,9 +460,9 @@ StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
 _**~~Retrofit~~ | ~~Immutables~~| ~~Gson~~ | ~~Guava~~ | ~~SqlDelight/Brite~~ | ~~Store~~ | ~~Curl~~ | ~~JsonViewer.hu~~**_
 
 ---
-#Apollo-Android has **2 main parts**
-- **Gradle Plugin** Apollo Code Gen Plugin  To generate code.
-- **Runtime** Apollo Client For executing operations
+#Apollo-Android Has **2 Main Parts**
+- **Gradle Plugin** Apollo code generation plugin
+- **Runtime** Apollo client for executing operations
 
 
 ---
@@ -503,7 +503,7 @@ organization(login:”nyTimes”){
 
 ---
 
-#Graph**i**QL: Explore Schema and Build Quueries
+#Graph**i**QL: Explore Schema and Build Queries
 - Shape of Response
 - Nullability Rules
 - Enum values
@@ -521,7 +521,7 @@ Graph**i**QL is easy!
  ---
 ![left](ivan.png)
 
-#Apollo Writes Code So You Don't Have To
+#[fit]Apollo Writes Code So You Don't Have To
 
 ```kotlin
  private fun CodeGenerationIR.writeJavaFiles(context: CodeGenerationContext, outputDir: File,
@@ -579,7 +579,7 @@ public static final class Builder {
 
 ---
 
-#[fit]Notice how our request param `name` is validated
+#[fit]Notice How Our Request Param `name` is Validated
 ```kotlin, [.highlight: 17]
 ///api
 val query = RepoQuery.builder.name("nytimes").build()
@@ -634,7 +634,7 @@ public static final class Builder {
 ```
 
 ---
-#Mapper - Reflection Free Parser
+#Mapper - Reflection-Free Parser
 ```java
  public static final class Mapper implements ResponseFieldMapper<Repositories> {
       final Edge.Mapper edgeFieldMapper = new Edge.Mapper();
@@ -659,7 +659,7 @@ public static final class Builder {
 
 ```
 
-Can parse 20mb response without OOM
+Can parse 20MB Response w/o OOM
 
 ---
 #[fit]Querying Github's API
@@ -711,7 +711,7 @@ githubCall.enqueue(new ApolloCall.Callback<>() {
 });
 ```
 ---
-#Apollo Handles Storage as well
+#Apollo also Handles Storage
 ---
 #Storage with Apollo is done through Caches
 - HTTP
@@ -731,16 +731,16 @@ githubCall.enqueue(new ApolloCall.Callback<>() {
 ```
 
 ---
-#[fit]HTTP Caching is about as well as you can do in REST
+#[fit]HTTP Caching - as well as you can do in REST
 #[fit] Apollo Introduces a Normalized Cache
 #[fit]Apollo Store
 
 ---
 #Apollo Store
 - Allows multiple queries to share same cached values
-- Great for things like Master/Detail
-- Caching is done Post Parsing
-- Each field is Cached Individually
+- Great for things like master/detail
+- Caching is done post-parsing
+- Each field is cached individually
 - Apollo ships with both an in memory and a disk implementation of an Apollo Store
 - You can even use both at same time
 
@@ -752,7 +752,7 @@ githubCall.enqueue(new ApolloCall.Callback<>() {
 
 ---
 
-#Settings Up Bi-Level Caching with Apollo Store
+#Setup Bi-Level Caching with Apollo Store
 ```java
 //Create DB
 ApolloSqlHelper apolloSqlHelper = ApolloSqlHelper.create(context, "db_name");
@@ -784,7 +784,7 @@ NormalizedCacheFactory normalizedCacheFactory = new LruNormalizedCacheFactory(Ev
     };
 ```
 ---
-#Init Apollo Client with a cache
+#Init Apollo Client With a Cache
 ```java, [.highlight: 4]
 //Build the Apollo Client
 ApolloClient apolloClient = ApolloClient.builder()
@@ -794,7 +794,7 @@ ApolloClient apolloClient = ApolloClient.builder()
                                     .build();
 ```
 ---
-#Don't like our Cache? BYO Cache
+#Don't Like Our Cache? BYO Cache
 ```java
 public abstract class NormalizedCache {
 
