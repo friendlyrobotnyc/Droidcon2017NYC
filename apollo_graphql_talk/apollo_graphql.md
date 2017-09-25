@@ -272,7 +272,7 @@ interface Issue {
     }
 }
 ```
-####**Error Prone even with code generation**
+####**Error prone even with code generation**
 ---
 ^
 #Data Modeling with Immutables
