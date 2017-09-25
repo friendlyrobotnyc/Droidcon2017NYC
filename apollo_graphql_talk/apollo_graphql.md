@@ -725,10 +725,8 @@ githubCall.enqueue(new ApolloCall.Callback<>() {
 - Useful for background updating to prefill cache
 
 - Prefetching
-
-```java
   apolloClient.prefetch(new RepoQuery("nytimes"));
-```
+
 
 ---
 #[fit]HTTP Caching - as well as you can do in REST
