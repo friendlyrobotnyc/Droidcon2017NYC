@@ -1,7 +1,7 @@
 build-lists: true
 
 ```javascript
-Query DroidConNYC{ slide(id: "1") 
+Query DroidConNYC{ slide(id: "1")
    {
     Title
     Authors
@@ -10,41 +10,38 @@ Query DroidConNYC{ slide(id: "1")
 }
 
 {
-  Title: Intro to GraphQL on Android,
-  Authors:  [“Brian Plummer”,”Mike Nakhimovich],
-  Company: New York Times
+  Title: "Intro to GraphQL on Android",
+  Authors:  ["Brian Plummer","Mike Nakhimovich"],
+  Company: "The New York Times"
 }
 ```
 
 ---
 
-#We work at NYTimes
-##Where we do _**a lot**_ of data loading
+#We work at The New York Times
+##We do _**a lot**_ of data loading
 
 ![right 75%](fresh_launch.gif)
 
 ---
-#Recently, our team began moving from Restful APIs to instead use GraphQL
----
-
-#Before we dive into how we did it, lets start with a primer on what graphql is and why you should care
+#Recently, our team moved from using RESTful APIs to GraphQL for our data loading architecture
 
 ---
 ![fit](graphql.png)
 
-#What’s  GraphQL?
+#What’s GraphQL?
 
-- A query language for APIs and a runtime for fulfilling those queries with your existing data.
-- Alternative for Rest-API
+- A query language for APIs and a runtime for fulfilling those queries with your existing data
+- Alternative to RESTful API
 - Client driven - get only data you need
 - Works on iOS, Android, Web
 
 ---
 ![fit](graphql.png)
-#GraphQL was created by Facebook as a reimagining of server/client data transfer
+#GraphQL was created by Facebook as a new standard for server/client data transfer
 
 - Give front end developers an efficient way to ask for minimal data
-- Give server-side developers a robust way to get their data out to their users.
+- Give server-side developers a robust way to get their data out to their users
 
 ---
 ![fit](graphql.png)
@@ -60,7 +57,7 @@ Query DroidConNYC{ slide(id: "1")
 
 ---
 
-#Describe your data in a schema
+#Describe Your Data in a Schema
 
 ```javascript
 
@@ -72,7 +69,7 @@ type Character {
 ```
 ---
 
-#Describe your data in a schema
+#Describe Your Data in a Schema
 
 ```javascript, [.highlight: 1]
 
@@ -85,7 +82,7 @@ type Character {
 **Character** is a GraphQL Object Type, meaning it's a type with some fields. Most of the types in your schema will be object types.
 
 ---
-#Describe your data in a schema
+#Describe Your Data in a Schema
 
 ```javascript, [.highlight: 2,3]
 
@@ -99,7 +96,7 @@ type Character {
 
 ---
 
-#Describe your data in a schema
+#Describe Your Data in a Schema
 
 ```javascript, [.highlight: 2]
 
@@ -109,11 +106,11 @@ type Character {
 }
 
 ```
-**String** is one of the built-in scalar types - these are types that resolve to a single scalar object, and can't have sub-selections in the query.
+**String** is one of the built-in scalar types. These are types that resolve to a single scalar object and can't have sub-selections in the query.
 
 ---
 
-#Graphql Example Schema 
+#GraphQL Example Schema
 
 ```javascript, [.highlight: 2]
 
@@ -127,7 +124,7 @@ type Character {
 
 ---
 
-#Graphql Example Schema 
+#GraphQL Example Schema
 
 ```javascript, [.highlight: 3]
 
@@ -147,13 +144,13 @@ type Character {
 
 ---
 
-#GraphQL let's you combine resources in one request
+#Combine Resources into One Request
 
 ```javascript
 {
   hero {
     name
-    # Queries can have comments!
+    # Queries can have comments
     friends {
       name
     }
@@ -167,13 +164,13 @@ type Character {
 ---
 
 
-#GraphQL let's you combine resources in one request
+#Combine Resources into One Request
 
 ```javascript
 {
   hero {
     name
-    # Queries can have comments!
+    # Queries can have comments
     friends {
       name
     }
@@ -184,7 +181,7 @@ type Character {
 ![right 110%](basic_response.png)
 
 ---
-#[fit] You can also reuse fields in a fragment
+#[fit]Reuse Fields in a Fragment
 
 ```java
 {
@@ -204,7 +201,7 @@ fragment comparisonFields on Character {
 ![right](blank.png)
 
 ---
-#[fit] You can also reuse fields in a fragment
+#[fit]Reuse Fields in a Fragment
 
 
 ```java
@@ -226,36 +223,36 @@ fragment comparisonFields on Character {
 ![right 120%](fragment_response.png)
 
 ---
-#**Walkthrough Time!**:
+#**Example**:
 ![left](octocat.png)
 
-#Loading data from Github using Rest vs GraphQL
+#Loading Data from Github Using REST vs GraphQL
 ---
-#[fit]On Any Platform Data Loading can be broken down into
-1. Model Data 
+#[fit]On any platform, data loading consists of these steps:
+1. Model Data
 2. Network
 3. Transform
 4. Persist
 
 
 ---
-#[fit] How does REST  look on Android?
+#[fit] How does REST look on Android?
 ---
 
-#Like a lot of dependencies
+#...It Looks Like a lot of Dependencies
 | Data Modeling | Networking | Storage | Transform |
 | --- | --- | --- | --- |
 | Immutables |  OKhttp | Store | Gson|
 | Curl | Retrofit | SqlDelight | RxJava |
 
-#Yes those are all needed :joy:
+#Yes, those are all needed :joy:
 
 
 ---
 
-#[fit]Start with Inspection 
+#[fit]Start with Inspection
 #<br><br><br><br><br><br><br>
-#[fit] _**curl -i "https://api.github.com/repos/vmg/redcarpet/issues?state=closed"**_ 
+#[fit] _**curl -i "https://api.github.com/repos/vmg/redcarpet/issues?state=closed"**_
 
 ![fit](json_viewer.png)
 
@@ -275,7 +272,7 @@ interface Issue {
     }
 }
 ```
-####**Error Prone even with Code Generation**
+####**Error Prone even with code generation**
 ---
 ^
 #Data Modeling with Immutables
@@ -347,7 +344,7 @@ CREATE TABLE issue (
 ```java
 public abstract class Issue implements IssueModel {
     public static final Mapper<Issue> MAPPER =
-            new Mapper<>((Mapper.Creator<Issue>) 
+            new Mapper<>((Mapper.Creator<Issue>)
             ImmutableIssue::of);
 
     public static final class Marshal extends IssueMarshal {
@@ -390,13 +387,13 @@ StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
 
 ---
 
-#[fit]Thats a good architecture
+#[fit]That's a Good Architecture
 #It's also not something we can expect a beginner to know
 ![](overwhelmed.jpg)
 
 ---
-#[fit]REST feels like legacy tech
-##It reminds me of Java with all these great tools & hours of setup to do anything
+#[fit]REST Feels Like Legacy Tech
+##Well-established and with great tools, but cumbersome to work with
 ---
 
 #[fit] Thanks to Facebook, there's a new kid on the block
@@ -408,7 +405,7 @@ StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
 
 ![](android.png)
 
-#[fit] Now lets see GraphQL on Android
+#[fit]Now, Let's See GraphQL on Android
 
 ---
 #_**We can't since Facebook didn't open source an Android Client, Thanks for your time and goodnight :disappointed:**_
@@ -427,7 +424,7 @@ StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
 ![ original 50%](apollo_adroid.png)
 
 ###Introducing Apollo-Android GraphQL
-###<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>_**Apollo Android**_ was developed by Shopify, New York Times, & AirBnb as an **Open Source** culmination of tools, libraries, and patterns to assist in fetching data from   GraphQL servers
+###<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>_**Apollo Android**_ was developed by Shopify, New York Times, & AirBnb as an **Open Source** GraphQL solution.
 
 
 
@@ -438,12 +435,12 @@ StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
 - A strongly-typed, caching GraphQL client for Android
 - Rich support of Types and Type Mappings
 - Code Generation for the Messy Parts
-- Query Validation at compilation 
+- Query Validation at compilation
 
 ---
 ![fit](graphql.png)
-#Created based on Facebook's GraphQl Spec
-- Works with any Graphql Query
+#Meets Facebook's GraphQL Spec
+- Works with any GraphQL Query
 - Fragments
 - Union Types
 - Nullability
@@ -451,7 +448,7 @@ StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
 
 ---
 
-#Apollo Reduces setup to work with a backend
+#Apollo Reduces Setup to Work with a Backend
 
 | Data Modeling | Networking | Storage | Transform |
 | --- | --- | --- | --- |
@@ -474,7 +471,7 @@ _**~~Retrofit~~ | ~~Immutables~~| ~~Gson~~ | ~~Guava~~ | ~~SqlDelight/Brite~~ | 
 ![fit](success.jpg)
 
 ---
-#Add Apollo dependencies
+#Add Apollo Dependencies
 ```java
 build.gradle:
 dependencies {
@@ -488,9 +485,9 @@ apply plugin: 'com.apollographql.android'
 compile 'com.apollographql.apollo:apollo-rx-support:0.4.1'
 ```
 
---- 
-#Create a standard GraphQL query
-## Queries have params and define shape of response 
+---
+#Create a Standard GraphQL Query
+## Queries have params and define shape of response
 ```java
 organization(login:”nyTimes”){
     repositories(first:6) {
@@ -500,13 +497,13 @@ organization(login:”nyTimes”){
 ```
 ---
 
-#[fit]Leave your CURL at home
-##Most Graphql Servers have a GUI (Graph**i**QL)
+#[fit]Leave Your CURL at Home
+##Most GraphQL Servers have a GUI (Graph**i**QL)
 ###https://developer.github.com/v4/explorer/
 
 ---
 
-#Graph**i**QL is for exploring schema and building queries
+#Graph**i**QL: Explore Schema and Build Quueries
 - Shape of Response
 - Nullability Rules
 - Enum values
@@ -524,7 +521,7 @@ Graph**i**QL is easy!
  ---
 ![left](ivan.png)
 
-#Apollo writes code so you don't have to
+#Apollo Writes Code So You Don't Have To
 
 ```kotlin
  private fun CodeGenerationIR.writeJavaFiles(context: CodeGenerationContext, outputDir: File,
@@ -552,11 +549,11 @@ Graph**i**QL is easy!
         }
   }
   ```
-#[fit] Actually Ivan(sav007) does he's awesome 
+#[fit] Actually Ivan(sav007) Does (He's Awesome)
 
 ---
 
-#[fit]Builder - For Creating your request instance
+#[fit]Builder - For Creating Your Request Instance
 ```kotlin
 ///api
 val query = RepoQuery.builder.name("nytimes").build()
@@ -608,7 +605,7 @@ public static final class Builder {
 
 
 ---
-#Response Models 
+#Response Models
 ```java
  public static class Repositories {
     final @Nonnull String __typename;
@@ -721,8 +718,8 @@ githubCall.enqueue(new ApolloCall.Callback<>() {
 - Normalized
 
 ---
-#Http Caching
-- Similar to OKHTTP Cache (LRU) 
+#HTTP Caching
+- Similar to OKHTTP Cache (LRU)
 - Streams response to cache same time as parsing
 - Can Set Max Cache Size
 - Useful for background updating to prefill cache
@@ -735,7 +732,7 @@ githubCall.enqueue(new ApolloCall.Callback<>() {
 
 ---
 #[fit]HTTP Caching is about as well as you can do in REST
-#[fit] Apollo Introduces a Normalized Cache 
+#[fit] Apollo Introduces a Normalized Cache
 #[fit]Apollo Store
 
 ---
@@ -815,8 +812,13 @@ public abstract boolean remove(@Nonnull CacheKey cacheKey)
 
 ---
 #Apollo Is Reactive
-##QueryWatcher will emit new response when there are changes to the normalized cache records this query depends on or when mutation call occurs
+##`QueryWatcher` is a listener for changes to any fields in a query.
 
+- When a dependent field changes in the Apollo Store, QueryWatcher will re-emit the response.  
+
+- `QueryWatcher` ~ endless subscription to a particular query.
+
+#Insert Example of a query watcher
 ---
 #Bonus: Includes RxJava Bindings
 ```java
@@ -832,14 +834,8 @@ RxApollo.from(apolloClient.query(RepoQuery.builder().name("nytimes").build()))
 ---
 
 #Version 1.0 ships soon!
-- 380 commits 
+- 380 commits
 - 1000s of tests
 - 18 contributors including devs from Shopify, Airbnb, NY Times
 
 - Come join us at https://github.com/apollographql/apollo-android
-
-
-
-
-
-
