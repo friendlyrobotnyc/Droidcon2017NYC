@@ -811,15 +811,6 @@ public abstract boolean remove(@Nonnull CacheKey cacheKey)
 ```
 
 ---
-#Apollo Is Reactive
-##`QueryWatcher` is a listener for changes to any fields in a query.
-
-- When a dependent field changes in the Apollo Store, QueryWatcher will re-emit the response.  
-
-- `QueryWatcher` ~ endless subscription to a particular query.
-
-#Insert Example of a query watcher
----
 #Bonus: Includes RxJava Bindings
 ```java
 RxApollo.from(apolloClient.query(RepoQuery.builder().name("nytimes").build()))
