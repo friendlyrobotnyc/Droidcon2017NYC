@@ -475,14 +475,14 @@ _**~~Retrofit~~ | ~~Immutables~~| ~~Gson~~ | ~~Guava~~ | ~~SqlDelight/Brite~~ | 
 ```java
 build.gradle:
 dependencies {
-  classpath 'com.apollographql.apollo:gradle-plugin:0.4.1'
+  classpath 'com.apollographql.apollo:gradle-plugin:0.5.0'
 }
 
 app/build.gradle:
 apply plugin: 'com.apollographql.android'
 .....
 //optional RxSupport
-compile 'com.apollographql.apollo:apollo-rx-support:0.4.1'
+compile 'com.apollographql.apollo:apollo-rx-support:0.5.0'
 ```
 
 ---
@@ -823,8 +823,8 @@ RxApollo.from(apolloClient.query(RepoQuery.builder().name("nytimes").build()))
 ---
 
 #Version 1.0 ships soon!
-- 380 commits
+- 550 commits
 - 1000s of tests
-- 18 contributors including devs from Shopify, Airbnb, NY Times
+- 41 contributors including devs from Shopify, Airbnb, NY Times
 
 - Come join us at https://github.com/apollographql/apollo-android
