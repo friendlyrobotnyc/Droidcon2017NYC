@@ -12,19 +12,19 @@ Query DroidConNYC{ slide(id: "1")
 {
   Title: "Intro to GraphQL on Android",
   Authors:  ["Brian Plummer","Mike Nakhimovich"],
-  Company: "The New York Times"
+  Company: "FriendlyRobot"
 }
 ```
 
 ---
 
-#We work at The New York Times
-##We do _**a lot**_ of data loading
+#We were working at The New York Times
+##We were doing _**a lot**_ of data loading
 
 ![right 75%](fresh_launch.gif)
 
 ---
-#Recently, our team moved from using RESTful APIs to GraphQL for our data loading architecture
+#The team moved from using RESTful APIs to GraphQL for our data loading architecture
 
 ---
 ![fit](graphql.png)
@@ -242,7 +242,7 @@ fragment comparisonFields on Character {
 #...It Looks Like a lot of Dependencies
 | Data Modeling | Networking | Storage | Transform |
 | --- | --- | --- | --- |
-| Immutables |  OKhttp | Store | Gson|
+| Immutables |  OKhttp | Store | Moshi|
 | Curl | Retrofit | SqlDelight | RxJava |
 
 #Yes, those are all needed :joy:
@@ -401,26 +401,6 @@ StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
 ![fit](graphql.png)
 
 ---
-![](graphql.png)
-
-![](android.png)
-
-#[fit]Now, Let's See GraphQL on Android
-
----
-#_**We can't since Facebook didn't open source an Android Client, Thanks for your time and goodnight :disappointed:**_
-
-
-![fit](no_results.png)
-
----
-
-#[fit]_**Just Kidding, Community to the Rescue!**_
-
-
-![fit](no_results.png)
-
----
 ![ original 50%](apollo_adroid.png)
 
 ###Introducing Apollo-Android GraphQL
@@ -475,14 +455,15 @@ _**~~Retrofit~~ | ~~Immutables~~| ~~Gson~~ | ~~Guava~~ | ~~SqlDelight/Brite~~ | 
 ```java
 build.gradle:
 dependencies {
-  classpath 'com.apollographql.apollo:gradle-plugin:0.5.0'
+  classpath 'com.apollographql.apollo:apollo-gradle-plugin:0.5.0'
 }
 
 app/build.gradle:
 apply plugin: 'com.apollographql.android'
 .....
+compile 'com.apollographql.apollo:apollo-runtime:0.5.0'
 //optional RxSupport
-compile 'com.apollographql.apollo:apollo-rx-support:0.5.0'
+compile 'com.apollographql.apollo:apollo-rx2-support:0.5.0'
 ```
 
 ---
