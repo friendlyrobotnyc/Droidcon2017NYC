@@ -400,6 +400,17 @@ StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
 #[fit] GraphQL
 ![fit](graphql.png)
 
+---	
+![](graphql.png)	
+ ![](android.png)	
+ #[fit]Now, Let's See GraphQL on Android	
+ ---	
+#_**We can't since Facebook didn't open source an Android Client, Thanks for your time and goodnight :disappointed:**_	
+ ![fit](no_results.png)	
+ ---	
+ #[fit]_**Just Kidding, Community to the Rescue!**_	
+ ![fit](no_results.png)	
+
 ---
 ![ original 50%](apollo_adroid.png)
 
