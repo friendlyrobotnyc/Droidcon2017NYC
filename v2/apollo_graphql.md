@@ -1,7 +1,7 @@
 build-lists: true
 
 ```javascript
-Query DroidConNYC{ slide(id: "1")
+Query Google Talk{ slide(id: "1")
    {
     Title
     Authors
@@ -11,22 +11,23 @@ Query DroidConNYC{ slide(id: "1")
 
 {
   Title: "Intro to GraphQL on Android",
-  Authors:  ["Brian Plummer","Mike Nakhimovich"],
-  Company: "FriendlyRobot"
+  Authors:  [Mike Nakhimovich"],
 }
 ```
 
 ---
 
-#We were working at The New York Times
-##We were doing _**a lot**_ of data loading
+#I used to work at a newspaper
+##Where we did _**a lot**_ of data loading
 
 ![right 75%](fresh_launch.gif)
 
 ---
-#The team moved from using RESTful APIs to GraphQL for our data loading architecture
+#My team moved from using RESTful APIs to GraphQL for our data loading architecture
+###Today I'm going to be talking about what GraphQL is and why we switched
 
 ---
+[.build-lists: true]
 ![fit](graphql.png)
 
 #What’s GraphQL?
@@ -142,15 +143,33 @@ type Character {
 
 #get predictable results
 
+
 ---
 
-#Combine Resources into One Request
+#Graphql allows combining results
 
 ```javascript
+//request1
+{
+  hero(id: 5) {
+    name   
+}
+//request2
+friends(heroID: id) {
+    name
+}
+```
+
+
+---
+
+#Multiple requests from graph combined
+
+```javascript
+//
 {
   hero {
     name
-    # Queries can have comments
     friends {
       name
     }
@@ -158,13 +177,12 @@ type Character {
 }
 ```
 
-![right](blank.png)
 
 
 ---
 
 
-#Combine Resources into One Request
+#Multiple requests from graph combined
 
 ```javascript
 {
@@ -186,14 +204,14 @@ type Character {
 ```java
 {
   leftColumn: hero(episode: EMPIRE) {
-    ...comparisonFields
+    ...sharedFields
   }
   rightColumn: hero(episode: JEDI) {
-    ...comparisonFields
+    ...sharedFields
   }
 }
 
-fragment comparisonFields on Character {
+fragment sharedFields on Character {
   name
   appearsIn
 }
@@ -207,14 +225,14 @@ fragment comparisonFields on Character {
 ```java
 {
   leftColumn: hero(episode: EMPIRE) {
-    ...comparisonFields
+    ...sharedFields
   }
   rightColumn: hero(episode: JEDI) {
-    ...comparisonFields
+    ...sharedFields
   }
 }
 
-fragment comparisonFields on Character {
+fragment sharedFields on Character {
   name
   appearsIn
 }
@@ -295,9 +313,9 @@ interface Issue {
 
 ^NOTE: show how poorly data is structured and how big it is/why we need reflection free parsing
 
-#[fit] Data Parsing with Gson
+#[fit] Data Parsing with Moshi
 ```java, [.highlight: 1]
-@Gson.TypeAdapters
+@Moshi.TypeAdapters
 @Value.Immutable
 interface Issue {
     User user();
@@ -401,25 +419,26 @@ StoreBuilder.parsedWithKey<GitHubOrgId, BufferedSource, Issues>()
 ![fit](graphql.png)
 
 ---	
-![](graphql.png)	
- ![](android.png)	
- #[fit]Now, Let's See GraphQL on Android	
+
+#[fit] Now, Let's See GraphQL on Android
+
  ---	
 #_**We can't since Facebook didn't open source an Android Client, Thanks for your time and goodnight :disappointed:**_	
  ![fit](no_results.png)	
  ---	
- #[fit]_**Just Kidding, Community to the Rescue!**_	
- ![fit](no_results.png)	
+
+#[fit] _**Just Kidding, Community to the Rescue!**_	
 
 ---
 ![ original 50%](apollo_adroid.png)
 
 ###Introducing Apollo-Android GraphQL
-###<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>_**Apollo Android**_ was developed by Shopify, New York Times, & AirBnb as an **Open Source** GraphQL solution.
+###<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>_**Apollo Android**_ was developed by engineers @ Shopify, New York Times, & AirBnb as an **Open Source** GraphQL solution.
 
 
 
 ---
+[.build-lists: true]
 ![fit](graphql.png)
 #Apollo-Android
 - Built by Android devs for Android devs
